@@ -8,6 +8,7 @@ import {
   Modal,
   Image,
   Dimensions,
+  TextInput,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -81,6 +82,7 @@ export default function HomeScreen() {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
+  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
   const toggleFilter = (filter) => {
@@ -125,6 +127,20 @@ export default function HomeScreen() {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <SafeAreaView style={styles.container}>
+        <View style={styles.searchContainer}>
+          <Icon
+            name="search"
+            size={24}
+            color="#999"
+            style={styles.searchIcon}
+          />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search for parking spots"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
         <View style={styles.mapContainer}>
           <MapView
             style={styles.map}
@@ -337,6 +353,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    borderRadius: 20,
+    margin: 10,
+    paddingHorizontal: 10,
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    fontSize: 16,
   },
   mapContainer: {
     height: height * 0.6, // 60% of screen height
