@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { Button } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 
 export default function HostScreen() {

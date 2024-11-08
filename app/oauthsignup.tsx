@@ -19,7 +19,7 @@ export default function OAuthSignUpScreen() {
     // In a real app, this would initiate the Google OAuth flow
     console.log("Google Sign Up initiated");
     // For demo purposes, navigate to the home screen
-    router.replace("/");
+    router.replace({ pathname: "/termsandservices" });
   };
 
   return (
@@ -61,8 +61,7 @@ export default function OAuthSignUpScreen() {
             buttonStyle={styles.signUpButton}
             titleStyle={styles.buttonText}
             onPress={() => {
-              // For demo purposes, navigate to the home screen
-              router.replace("/");
+              router.replace({ pathname: "/termsandservices" });
             }}
             accessibilityLabel="Sign up button"
           />
