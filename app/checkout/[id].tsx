@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button } from "@rneui/themed";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { parkingSpots } from "../data/parking";
@@ -27,6 +26,18 @@ export default function CheckoutView() {
       </SafeAreaView>
     );
   }
+
+  const handleConfirmBooking = () => {
+    // Implement booking confirmation logic here
+    router.push({
+      pathname: "/",
+      params: {
+        justCheckedOut: "true",
+        spotId: spot.id,
+        duration: selectedDuration,
+      },
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -115,10 +126,7 @@ export default function CheckoutView() {
         </View>
         <TouchableOpacity
           style={styles.confirmButton}
-          onPress={() => {
-            // Implement booking confirmation logic here
-            router.push("/");
-          }}
+          onPress={handleConfirmBooking}
         >
           <Text style={styles.confirmButtonText}>Confirm Booking</Text>
         </TouchableOpacity>

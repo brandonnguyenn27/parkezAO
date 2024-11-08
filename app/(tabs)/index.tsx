@@ -5,8 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Modal,
-  Image,
   Dimensions,
   TextInput,
 } from "react-native";
