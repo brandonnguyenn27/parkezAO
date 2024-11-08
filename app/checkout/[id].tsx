@@ -1,57 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@rneui/themed";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-
-const parkingSpots = [
-  {
-    id: 1,
-    latitude: 37.3352,
-    longitude: -121.8811,
-    price: 2,
-    name: "Residential Parking",
-    address: "123 S 4th St, San Jose, CA",
-    rating: 4.8,
-  },
-  {
-    id: 2,
-    latitude: 37.3337,
-    longitude: -121.8847,
-    price: 3,
-    name: "Street Parking",
-    address: "456 E San Fernando St, San Jose, CA",
-    rating: 4.7,
-  },
-  {
-    id: 3,
-    latitude: 37.3372,
-    longitude: -121.8795,
-    price: 2,
-    name: "Residential Parking",
-    address: "789 S 10th St, San Jose, CA",
-    rating: 4.6,
-  },
-  {
-    id: 4,
-    latitude: 37.3365,
-    longitude: -121.8818,
-    price: 4,
-    name: "Street Parking",
-    address: "101 S San Carlos St, San Jose, CA",
-    rating: 4.9,
-  },
-  {
-    id: 5,
-    latitude: 37.3382,
-    longitude: -121.8833,
-    price: 5,
-    name: "Residential Parking",
-    address: "202 S Market St, San Jose, CA",
-    rating: 4.5,
-  },
-];
+import { parkingSpots } from "../data/parking";
 
 export default function CheckoutView() {
   const { id } = useLocalSearchParams();
@@ -72,75 +31,80 @@ export default function CheckoutView() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>Checkout</Text>
-        <View style={styles.spotInfo}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={styles.backButton}
+          >
+            <Icon name="arrow-back" size={24} color="#007AFF" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Checkout</Text>
+        </View>
+        <View style={styles.card}>
           <Text style={styles.spotName}>{spot.name}</Text>
           <Text style={styles.spotAddress}>{spot.address}</Text>
           <Text style={styles.spotPrice}>${spot.price}/hr</Text>
         </View>
-        <View style={styles.durationSelector}>
+        <View style={styles.section}>
           <Text style={styles.sectionTitle}>Select Duration</Text>
           <View style={styles.durationButtons}>
             {durations.map((duration) => (
-              <Button
+              <TouchableOpacity
                 key={duration}
-                title={`${duration}h`}
-                type={selectedDuration === duration ? "solid" : "outline"}
-                buttonStyle={[
+                style={[
                   styles.durationButton,
                   selectedDuration === duration &&
                     styles.selectedDurationButton,
                 ]}
-                titleStyle={[
-                  styles.durationButtonText,
-                  selectedDuration === duration &&
-                    styles.selectedDurationButtonText,
-                ]}
                 onPress={() => setSelectedDuration(duration)}
-              />
+              >
+                <Text
+                  style={[
+                    styles.durationButtonText,
+                    selectedDuration === duration &&
+                      styles.selectedDurationButtonText,
+                  ]}
+                >
+                  {duration}h
+                </Text>
+              </TouchableOpacity>
             ))}
           </View>
         </View>
-        <View style={styles.paymentMethods}>
+        <View style={styles.section}>
           <Text style={styles.sectionTitle}>Payment Method</Text>
-          <Button
-            title="Credit Card"
-            icon={
-              <Icon
-                name="credit-card"
-                size={20}
-                color="#007AFF"
-                style={styles.paymentIcon}
-              />
-            }
-            type="outline"
-            buttonStyle={styles.paymentButton}
-            titleStyle={styles.paymentButtonText}
-          />
-          <Button
-            title="PayPal"
-            icon={
-              <Icon
-                name="payment"
-                size={20}
-                color="#007AFF"
-                style={styles.paymentIcon}
-              />
-            }
-            type="outline"
-            buttonStyle={styles.paymentButton}
-            titleStyle={styles.paymentButtonText}
-          />
+          <TouchableOpacity style={styles.paymentButton}>
+            <Icon
+              name="credit-card"
+              size={24}
+              color="#007AFF"
+              style={styles.paymentIcon}
+            />
+            <Text style={styles.paymentButtonText}>Credit Card</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.paymentButton}>
+            <Icon
+              name="payment"
+              size={24}
+              color="#007AFF"
+              style={styles.paymentIcon}
+            />
+            <Text style={styles.paymentButtonText}>PayPal</Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.summary}>
+        <View style={styles.section}>
           <Text style={styles.sectionTitle}>Summary</Text>
           <View style={styles.summaryRow}>
-            <Text>Parking Fee ({selectedDuration}h)</Text>
-            <Text>${spot.price * selectedDuration}.00</Text>
+            <Text style={styles.summaryText}>
+              Parking Fee ({selectedDuration}h)
+            </Text>
+            <Text style={styles.summaryText}>
+              ${spot.price * selectedDuration}.00
+            </Text>
           </View>
           <View style={styles.summaryRow}>
-            <Text>Service Fee</Text>
-            <Text>$2.00</Text>
+            <Text style={styles.summaryText}>Service Fee</Text>
+            <Text style={styles.summaryText}>$2.00</Text>
           </View>
           <View style={[styles.summaryRow, styles.totalRow]}>
             <Text style={styles.totalText}>Total</Text>
@@ -149,14 +113,21 @@ export default function CheckoutView() {
             </Text>
           </View>
         </View>
-        <Button
-          title="Confirm Booking"
-          buttonStyle={styles.confirmButton}
+        <TouchableOpacity
+          style={styles.confirmButton}
           onPress={() => {
             // Implement booking confirmation logic here
             router.push("/");
           }}
-        />
+        >
+          <Text style={styles.confirmButtonText}>Confirm Booking</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.homeButton}
+          onPress={() => router.push("/")}
+        >
+          <Text style={styles.homeButtonText}>Back to Home</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -165,22 +136,39 @@ export default function CheckoutView() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
   },
   scrollContent: {
     padding: 20,
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  backButton: {
+    padding: 5,
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginLeft: 10,
   },
-  spotInfo: {
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 15,
     marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   spotName: {
     fontSize: 18,
     fontWeight: "bold",
+    marginBottom: 5,
   },
   spotAddress: {
     fontSize: 14,
@@ -192,13 +180,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#007AFF",
   },
+  section: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
-  },
-  durationSelector: {
-    marginBottom: 20,
   },
   durationButtons: {
     flexDirection: "row",
@@ -206,37 +202,44 @@ const styles = StyleSheet.create({
   },
   durationButton: {
     width: 70,
-    marginHorizontal: 5,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#007AFF",
+    justifyContent: "center",
+    alignItems: "center",
   },
   selectedDurationButton: {
     backgroundColor: "#007AFF",
   },
   durationButtonText: {
     fontSize: 14,
+    color: "#007AFF",
   },
   selectedDurationButtonText: {
     color: "#fff",
   },
-  paymentMethods: {
-    marginBottom: 20,
-  },
   paymentButton: {
-    justifyContent: "flex-start",
-    marginBottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
   },
   paymentButtonText: {
     color: "#007AFF",
+    fontSize: 16,
   },
   paymentIcon: {
     marginRight: 10,
-  },
-  summary: {
-    marginBottom: 20,
   },
   summaryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 5,
+  },
+  summaryText: {
+    fontSize: 16,
   },
   totalRow: {
     borderTopWidth: 1,
@@ -246,9 +249,31 @@ const styles = StyleSheet.create({
   },
   totalText: {
     fontWeight: "bold",
+    fontSize: 18,
   },
   confirmButton: {
     backgroundColor: "#007AFF",
     paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  confirmButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  homeButton: {
+    backgroundColor: "#fff",
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#007AFF",
+  },
+  homeButtonText: {
+    color: "#007AFF",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
