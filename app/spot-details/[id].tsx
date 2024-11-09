@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Button, CheckBox } from "@rneui/themed";
-import { ParkingSpot, parkingSpots } from "../data/parking";
+import { parkingSpots } from "../data/parking";
 
 export default function SpotDetailsScreen() {
   const { id } = useLocalSearchParams();

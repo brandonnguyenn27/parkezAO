@@ -195,7 +195,7 @@ export default function HomeScreen() {
             <PriceFilter
               onFilterChange={handlePriceChange}
               initialMinPrice={0}
-              initialMaxPrice={100}
+              initialMaxPrice={25}
             />
             <RatingFilter
               onFilterChange={handleRatingChange}

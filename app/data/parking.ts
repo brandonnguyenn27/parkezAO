@@ -179,4 +179,43 @@ export const parkingSpots: ParkingSpot[] = [
       },
     ],
   },
+  {
+    id: 6,
+    name: "Union Square Garage",
+    address: "333 Post St, San Francisco, CA 94108",
+    price: 8,
+    latitude: 37.7879,
+    longitude: -122.4075,
+    rating: 4.3,
+    reviews: 150,
+    amenities: ["Security", "EV Charging", "Valet", "24/7 Access"],
+    description:
+      "Prime parking location in the heart of San Francisco's shopping district.",
+    images: [
+      "./assets/images/driveways/80lpjnvpct7d1.jpeg",
+      "https://example.com/union_square_garage_2.jpg",
+      "https://example.com/union_square_garage_3.jpg",
+    ],
+    reviewsList: [
+      {
+        id: "1",
+        user: "Jessica L.",
+        rating: 5,
+        comment:
+          "Perfect location for shopping. The valet service is excellent!",
+      },
+      {
+        id: "2",
+        user: "Mark T.",
+        rating: 4,
+        comment: "Bit expensive, but you can't beat the convenience.",
+      },
+      {
+        id: "3",
+        user: "Sophia R.",
+        rating: 4,
+        comment: "Clean and secure. Appreciate the EV charging stations.",
+      },
+    ],
+  },
 ];

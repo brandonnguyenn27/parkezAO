@@ -13,7 +13,7 @@ interface PriceFilterProps {
 export default function PriceFilter({
   onFilterChange,
   initialMinPrice = 0,
-  initialMaxPrice = 100,
+  initialMaxPrice = 25,
 }: PriceFilterProps) {
   const [isActive, setIsActive] = useState(false);
   const [minPrice, setMinPrice] = useState(initialMinPrice);

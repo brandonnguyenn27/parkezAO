@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -16,6 +17,11 @@ export default function CheckoutView() {
   const router = useRouter();
   const spot = parkingSpots.find((spot) => spot.id === Number(id));
   const [selectedDuration, setSelectedDuration] = useState(1);
+  const [showCreditCardForm, setShowCreditCardForm] = useState(false);
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [zipCode, setZipCode] = useState(""); // Added zip code state
 
   const durations = [1, 2, 3, 4];
 
@@ -84,7 +90,10 @@ export default function CheckoutView() {
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Payment Method</Text>
-          <TouchableOpacity style={styles.paymentButton}>
+          <TouchableOpacity
+            style={styles.paymentButton}
+            onPress={() => setShowCreditCardForm(!showCreditCardForm)}
+          >
             <Icon
               name="credit-card"
               size={24}
@@ -93,14 +102,51 @@ export default function CheckoutView() {
             />
             <Text style={styles.paymentButtonText}>Credit Card</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.paymentButton}>
+          {showCreditCardForm && (
+            <View style={styles.creditCardForm}>
+              <TextInput
+                style={styles.input}
+                placeholder="Card Number"
+                value={cardNumber}
+                onChangeText={setCardNumber}
+                keyboardType="number-pad"
+                maxLength={16}
+              />
+              <View style={styles.row}>
+                <TextInput
+                  style={[styles.input, styles.halfInput]}
+                  placeholder="MM/YY"
+                  value={expiryDate}
+                  onChangeText={setExpiryDate}
+                  keyboardType="numeric"
+                />
+                <TextInput
+                  style={[styles.input, styles.halfInput]}
+                  placeholder="CVV"
+                  value={cvv}
+                  onChangeText={setCvv}
+                  keyboardType="number-pad"
+                  maxLength={3}
+                />
+                <TextInput
+                  style={[styles.input, styles.halfInput]}
+                  placeholder="Zip Code"
+                  value={zipCode}
+                  onChangeText={setZipCode}
+                  keyboardType="number-pad"
+                  maxLength={5}
+                />
+              </View>
+            </View>
+          )}
+          <TouchableOpacity style={styles.applePayButton}>
             <Icon
-              name="payment"
+              name="apple"
               size={24}
-              color="#007AFF"
-              style={styles.paymentIcon}
+              color="#fff"
+              style={styles.applePayIcon}
             />
-            <Text style={styles.paymentButtonText}>PayPal</Text>
+            <Text style={styles.applePayButtonText}>Apple Pay</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.section}>
@@ -109,18 +155,18 @@ export default function CheckoutView() {
             <Text style={styles.summaryText}>
               Parking Fee ({selectedDuration}h)
             </Text>
-            <Text style={styles.summaryText}>
-              ${spot.price * selectedDuration}.00
+            <Text style={styles.summaryPrice}>
+              ${(spot.price * selectedDuration).toFixed(2)}
             </Text>
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.summaryText}>Service Fee</Text>
-            <Text style={styles.summaryText}>$2.00</Text>
+            <Text style={styles.summaryPrice}>$2.00</Text>
           </View>
           <View style={[styles.summaryRow, styles.totalRow]}>
             <Text style={styles.totalText}>Total</Text>
-            <Text style={styles.totalText}>
-              ${spot.price * selectedDuration + 2}.00
+            <Text style={styles.totalPrice}>
+              ${(spot.price * selectedDuration + 2).toFixed(2)}
             </Text>
           </View>
         </View>
@@ -241,6 +287,41 @@ const styles = StyleSheet.create({
   paymentIcon: {
     marginRight: 10,
   },
+  applePayButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#000",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginTop: 10,
+  },
+  applePayIcon: {
+    marginRight: 10,
+  },
+  applePayButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  creditCardForm: {
+    marginTop: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 8,
+  },
+  halfInput: {
+    flex: 1,
+  },
   summaryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -248,6 +329,11 @@ const styles = StyleSheet.create({
   },
   summaryText: {
     fontSize: 16,
+  },
+  summaryPrice: {
+    fontSize: 16,
+    textAlign: "right",
+    minWidth: 70,
   },
   totalRow: {
     borderTopWidth: 1,
@@ -258,6 +344,12 @@ const styles = StyleSheet.create({
   totalText: {
     fontWeight: "bold",
     fontSize: 18,
+  },
+  totalPrice: {
+    fontWeight: "bold",
+    fontSize: 18,
+    textAlign: "right",
+    minWidth: 70,
   },
   confirmButton: {
     backgroundColor: "#007AFF",
