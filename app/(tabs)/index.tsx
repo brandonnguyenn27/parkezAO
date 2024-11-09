@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,20 +10,17 @@ import {
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button } from "@rneui/themed";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import ParkingSpotModal from "@/components/ParkingSpotModal";
+import PriceFilter from "@/components/buttons/PriceFilter";
+import RatingFilter from "@/components/buttons/RatingFilter";
+import AmenitiesFilter from "@/components/buttons/AmenitiesFilter";
 import { parkingSpots } from "../data/parking";
+
 const { height, width } = Dimensions.get("window");
 
 export default function HomeScreen() {
-  const [activeFilters, setActiveFilters] = useState({
-    date: false,
-    price: false,
-    type: false,
-    more: false,
-  });
   const [selectedSpot, setSelectedSpot] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(14);
@@ -34,13 +31,35 @@ export default function HomeScreen() {
     longitudeDelta: 0.01,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const [filteredSpots, setFilteredSpots] = useState(parkingSpots);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(100);
+  const [minRating, setMinRating] = useState(0);
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const router = useRouter();
 
-  const toggleFilter = (filter) => {
-    setActiveFilters((prev) => ({
-      ...prev,
-      [filter]: !prev[filter],
-    }));
+  useEffect(() => {
+    applyFilters();
+  }, [minPrice, maxPrice, minRating, selectedAmenities, searchQuery]);
+
+  const applyFilters = () => {
+    const filtered = parkingSpots.filter((spot) => {
+      const matchesPrice = spot.price >= minPrice && spot.price <= maxPrice;
+      const matchesRating = spot.rating >= minRating;
+      const matchesAmenities = selectedAmenities.every((amenity) =>
+        spot.amenities.includes(amenity)
+      );
+      const matchesSearch =
+        spot.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        spot.address.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesPrice && matchesRating && matchesAmenities && matchesSearch;
+    });
+    setFilteredSpots(filtered);
+  };
+
+  const handlePriceChange = (min: number, max: number) => {
+    setMinPrice(min);
+    setMaxPrice(max);
   };
 
   const increaseZoom = () => {
@@ -75,29 +94,6 @@ export default function HomeScreen() {
     setModalVisible(true);
   };
 
-  const renderStars = (rating) => {
-    const fullStars = Math.floor(rating);
-    const halfStar = rating % 1 >= 0.5;
-    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-    return (
-      <View style={styles.starsContainer}>
-        {[...Array(fullStars)].map((_, i) => (
-          <Icon key={`full_${i}`} name="star" size={20} color="#FFD700" />
-        ))}
-        {halfStar && <Icon name="star-half" size={20} color="#FFD700" />}
-        {[...Array(emptyStars)].map((_, i) => (
-          <Icon
-            key={`empty_${i}`}
-            name="star-border"
-            size={20}
-            color="#FFD700"
-          />
-        ))}
-      </View>
-    );
-  };
-
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <SafeAreaView style={styles.container}>
@@ -121,7 +117,7 @@ export default function HomeScreen() {
             region={region}
             onRegionChangeComplete={setRegion}
           >
-            {parkingSpots.map((spot) => (
+            {filteredSpots.map((spot) => (
               <Marker
                 key={spot.id}
                 coordinate={{
@@ -136,125 +132,34 @@ export default function HomeScreen() {
               </Marker>
             ))}
           </MapView>
-          <View style={{ position: "absolute", top: 10, right: 10 }}>
-            <TouchableOpacity
-              onPress={increaseZoom}
-              style={{ marginBottom: 10 }}
-            >
-              <Text
-                style={{ fontSize: 10, padding: 5, backgroundColor: "white" }}
-              >
-                +
-              </Text>
+          <View style={styles.zoomControls}>
+            <TouchableOpacity onPress={increaseZoom} style={styles.zoomButton}>
+              <Text style={styles.zoomButtonText}>+</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={decreaseZoom}
-              style={{ marginBottom: 10 }}
-            >
-              <Text
-                style={{ fontSize: 10, padding: 5, backgroundColor: "white" }}
-              >
-                -
-              </Text>
+            <TouchableOpacity onPress={decreaseZoom} style={styles.zoomButton}>
+              <Text style={styles.zoomButtonText}>-</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={resetRegion}>
-              <Text
-                style={{ fontSize: 10, padding: 5, backgroundColor: "white" }}
-              >
-                Reset
-              </Text>
+            <TouchableOpacity onPress={resetRegion} style={styles.zoomButton}>
+              <Text style={styles.zoomButtonText}>Reset</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.contentContainer}>
           <ScrollView horizontal style={styles.filtersContainer}>
-            <Button
-              title="Date"
-              type={activeFilters.date ? "solid" : "outline"}
-              icon={
-                <Icon
-                  name="date-range"
-                  size={15}
-                  color={activeFilters.date ? "#fff" : "#000"}
-                />
-              }
-              buttonStyle={[
-                styles.filterButton,
-                activeFilters.date && styles.activeFilterButton,
-              ]}
-              titleStyle={[
-                styles.filterButtonText,
-                activeFilters.date && styles.activeFilterButtonText,
-              ]}
-              onPress={() => toggleFilter("date")}
+            <PriceFilter
+              onFilterChange={handlePriceChange}
+              initialMinPrice={0}
+              initialMaxPrice={100}
             />
-            <Button
-              title="Price"
-              type={activeFilters.price ? "solid" : "outline"}
-              icon={
-                <Icon
-                  name="attach-money"
-                  size={15}
-                  color={activeFilters.price ? "#fff" : "#000"}
-                />
-              }
-              buttonStyle={[
-                styles.filterButton,
-                activeFilters.price && styles.activeFilterButton,
-              ]}
-              titleStyle={[
-                styles.filterButtonText,
-                activeFilters.price && styles.activeFilterButtonText,
-              ]}
-              onPress={() => toggleFilter("price")}
-            />
-            <Button
-              title="Type"
-              type={activeFilters.type ? "solid" : "outline"}
-              icon={
-                <Icon
-                  name="local-parking"
-                  size={15}
-                  color={activeFilters.type ? "#fff" : "#000"}
-                />
-              }
-              buttonStyle={[
-                styles.filterButton,
-                activeFilters.type && styles.activeFilterButton,
-              ]}
-              titleStyle={[
-                styles.filterButtonText,
-                activeFilters.type && styles.activeFilterButtonText,
-              ]}
-              onPress={() => toggleFilter("type")}
-            />
-            <Button
-              title="More"
-              type={activeFilters.more ? "solid" : "outline"}
-              icon={
-                <Icon
-                  name="more-horiz"
-                  size={15}
-                  color={activeFilters.more ? "#fff" : "#000"}
-                />
-              }
-              buttonStyle={[
-                styles.filterButton,
-                activeFilters.more && styles.activeFilterButton,
-              ]}
-              titleStyle={[
-                styles.filterButtonText,
-                activeFilters.more && styles.activeFilterButtonText,
-              ]}
-              onPress={() => toggleFilter("more")}
-            />
+            <RatingFilter onFilterChange={setMinRating} />
+            <AmenitiesFilter onFilterChange={setSelectedAmenities} />
           </ScrollView>
 
           <View style={styles.bottomSheet}>
             <Text style={styles.bottomSheetTitle}>Parking Spots</Text>
             <ScrollView horizontal>
-              {parkingSpots.map((spot) => (
+              {filteredSpots.map((spot) => (
                 <TouchableOpacity
                   key={spot.id}
                   style={styles.parkingSpotCard}
@@ -309,29 +214,27 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  zoomControls: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+  },
+  zoomButton: {
+    backgroundColor: "white",
+    padding: 5,
+    marginBottom: 5,
+    borderRadius: 5,
+  },
+  zoomButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   contentContainer: {
     flex: 1,
   },
   filtersContainer: {
     paddingHorizontal: 10,
     paddingVertical: 10,
-  },
-  filterButton: {
-    marginRight: 10,
-    borderColor: "#ddd",
-    borderRadius: 20,
-    paddingHorizontal: 15,
-  },
-  activeFilterButton: {
-    backgroundColor: "#007AFF",
-    borderColor: "#007AFF",
-  },
-  filterButtonText: {
-    color: "#000",
-    fontSize: 12,
-  },
-  activeFilterButtonText: {
-    color: "#fff",
   },
   markerContainer: {
     backgroundColor: "#fff",

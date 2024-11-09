@@ -1,57 +1,69 @@
 export interface ParkingSpot {
   id: number;
-  latitude: number;
-  longitude: number;
-  price: number;
   name: string;
   address: string;
+  price: number;
+  latitude: number;
+  longitude: number;
   rating: number;
+  reviews: number;
+  amenities: string[];
 }
 
 export const parkingSpots: ParkingSpot[] = [
   {
     id: 1,
-    latitude: 37.3352,
-    longitude: -121.8811,
-    price: 2,
-    name: "Residential Parking",
-    address: "123 S 4th St, San Jose, CA",
-    rating: 4.8,
+    name: "Downtown Parking",
+    address: "123 Main St, San Jose, CA 95113",
+    price: 5,
+    latitude: 37.3382,
+    longitude: -121.8863,
+    rating: 4.5,
+    reviews: 120,
+    amenities: ["Security", "EV Charging", "Covered"],
   },
   {
     id: 2,
-    latitude: 37.3337,
-    longitude: -121.8847,
-    price: 3,
-    name: "Street Parking",
-    address: "456 E San Fernando St, San Jose, CA",
-    rating: 4.7,
+    name: "City Center Garage",
+    address: "456 1st St, San Jose, CA 95110",
+    price: 4,
+    latitude: 37.3318,
+    longitude: -121.8916,
+    rating: 4.0,
+    reviews: 85,
+    amenities: ["Security", "Wheelchair Accessible", "Valet"],
   },
   {
     id: 3,
-    latitude: 37.3372,
-    longitude: -121.8795,
-    price: 2,
     name: "Residential Parking",
-    address: "789 S 10th St, San Jose, CA",
-    rating: 4.6,
+    address: "789 2nd St, San Jose, CA 95112",
+    price: 3,
+    latitude: 37.3366,
+    longitude: -121.8797,
+    rating: 3.5,
+    reviews: 62,
+    amenities: ["EV Charging", "Wheelchair Accessible"],
   },
   {
     id: 4,
-    latitude: 37.3365,
-    longitude: -121.8818,
-    price: 4,
     name: "Street Parking",
-    address: "101 S San Carlos St, San Jose, CA",
-    rating: 4.9,
+    address: "321 3rd St, San Jose, CA 95113",
+    price: 6,
+    latitude: 37.3299,
+    longitude: -121.8839,
+    rating: 4.2,
+    reviews: 95,
+    amenities: ["Security", "Covered", "Valet"],
   },
   {
     id: 5,
-    latitude: 37.3382,
-    longitude: -121.8833,
-    price: 5,
     name: "Residential Parking",
-    address: "202 S Market St, San Jose, CA",
-    rating: 4.5,
+    address: "654 4th St, San Jose, CA 95112",
+    price: 3.5,
+    latitude: 37.3395,
+    longitude: -121.8853,
+    rating: 3.8,
+    reviews: 73,
+    amenities: ["Wheelchair Accessible", "Covered"],
   },
 ];
