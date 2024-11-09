@@ -12,6 +12,7 @@ import MapView, { Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
+import { Button, Overlay } from "@rneui/themed";
 import ParkingSpotModal from "@/components/ParkingSpotModal";
 import PriceFilter from "@/components/buttons/PriceFilter";
 import RatingFilter from "@/components/buttons/RatingFilter";
@@ -19,6 +20,14 @@ import AmenitiesFilter from "@/components/buttons/AmenitiesFilter";
 import { parkingSpots } from "../data/parking";
 
 const { height, width } = Dimensions.get("window");
+
+type SortOption = "price_asc" | "price_desc" | "rating_desc" | "distance_asc";
+
+// Add fake distance to parking spots
+const spotsWithDistance = parkingSpots.map((spot) => ({
+  ...spot,
+  distance: Math.random() * 5, // Random distance between 0 and 5 km
+}));
 
 export default function HomeScreen() {
   const [selectedSpot, setSelectedSpot] = useState(null);
@@ -31,19 +40,21 @@ export default function HomeScreen() {
     longitudeDelta: 0.01,
   });
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredSpots, setFilteredSpots] = useState(parkingSpots);
+  const [filteredSpots, setFilteredSpots] = useState(spotsWithDistance);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100);
   const [minRating, setMinRating] = useState(0);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<SortOption>("distance_asc");
+  const [sortOverlayVisible, setSortOverlayVisible] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     applyFilters();
-  }, [minPrice, maxPrice, minRating, selectedAmenities, searchQuery]);
+  }, [minPrice, maxPrice, minRating, selectedAmenities, searchQuery, sortBy]);
 
   const applyFilters = () => {
-    const filtered = parkingSpots.filter((spot) => {
+    let filtered = spotsWithDistance.filter((spot) => {
       const matchesPrice = spot.price >= minPrice && spot.price <= maxPrice;
       const matchesRating = spot.rating >= minRating;
       const matchesAmenities = selectedAmenities.every((amenity) =>
@@ -54,12 +65,37 @@ export default function HomeScreen() {
         spot.address.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesPrice && matchesRating && matchesAmenities && matchesSearch;
     });
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case "price_asc":
+          return a.price - b.price;
+        case "price_desc":
+          return b.price - a.price;
+        case "rating_desc":
+          return b.rating - a.rating;
+        case "distance_asc":
+          return a.distance - b.distance;
+        default:
+          return 0;
+      }
+    });
+
     setFilteredSpots(filtered);
   };
 
   const handlePriceChange = (min: number, max: number) => {
     setMinPrice(min);
     setMaxPrice(max);
+  };
+
+  const handleRatingChange = (rating: number) => {
+    setMinRating(rating);
+  };
+
+  const handleAmenitiesChange = (amenities: string[]) => {
+    setSelectedAmenities(amenities);
   };
 
   const increaseZoom = () => {
@@ -92,6 +128,15 @@ export default function HomeScreen() {
   const openSpotDetails = (spot) => {
     setSelectedSpot(spot);
     setModalVisible(true);
+  };
+
+  const toggleSortOverlay = () => {
+    setSortOverlayVisible(!sortOverlayVisible);
+  };
+
+  const handleSort = (option: SortOption) => {
+    setSortBy(option);
+    toggleSortOverlay();
   };
 
   return (
@@ -152,12 +197,30 @@ export default function HomeScreen() {
               initialMinPrice={0}
               initialMaxPrice={100}
             />
-            <RatingFilter onFilterChange={setMinRating} />
-            <AmenitiesFilter onFilterChange={setSelectedAmenities} />
+            <RatingFilter
+              onFilterChange={handleRatingChange}
+              initialRating={0}
+            />
+            <AmenitiesFilter onFilterChange={handleAmenitiesChange} />
           </ScrollView>
 
           <View style={styles.bottomSheet}>
-            <Text style={styles.bottomSheetTitle}>Parking Spots</Text>
+            <View style={styles.bottomSheetHeader}>
+              <Text style={styles.bottomSheetTitle}>Parking Spots</Text>
+              <Button
+                title="Sort by"
+                type="clear"
+                icon={
+                  <Icon
+                    name="sort"
+                    size={20}
+                    color="#007AFF"
+                    style={{ marginRight: 5 }}
+                  />
+                }
+                onPress={toggleSortOverlay}
+              />
+            </View>
             <ScrollView horizontal>
               {filteredSpots.map((spot) => (
                 <TouchableOpacity
@@ -171,6 +234,9 @@ export default function HomeScreen() {
                   <Text style={styles.parkingSpotRating}>
                     ★ {spot.rating} ({spot.reviews})
                   </Text>
+                  <Text style={styles.parkingSpotDistance}>
+                    {spot.distance.toFixed(1)} km away
+                  </Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -182,6 +248,64 @@ export default function HomeScreen() {
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
         />
+
+        <Overlay
+          isVisible={sortOverlayVisible}
+          onBackdropPress={toggleSortOverlay}
+          overlayStyle={styles.sortOverlay}
+        >
+          <View>
+            <Text style={styles.sortOverlayTitle}>Sort by</Text>
+            <TouchableOpacity
+              onPress={() => handleSort("distance_asc")}
+              style={styles.sortOption}
+            >
+              <Icon
+                name="place"
+                size={20}
+                color="#007AFF"
+                style={styles.sortOptionIcon}
+              />
+              <Text style={styles.sortOptionText}>Nearest</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleSort("price_asc")}
+              style={styles.sortOption}
+            >
+              <Icon
+                name="arrow-upward"
+                size={20}
+                color="#007AFF"
+                style={styles.sortOptionIcon}
+              />
+              <Text style={styles.sortOptionText}>Price: Low to High</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleSort("price_desc")}
+              style={styles.sortOption}
+            >
+              <Icon
+                name="arrow-downward"
+                size={20}
+                color="#007AFF"
+                style={styles.sortOptionIcon}
+              />
+              <Text style={styles.sortOptionText}>Price: High to Low</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleSort("rating_desc")}
+              style={styles.sortOption}
+            >
+              <Icon
+                name="star"
+                size={20}
+                color="#007AFF"
+                style={styles.sortOptionIcon}
+              />
+              <Text style={styles.sortOptionText}>Highest Rated</Text>
+            </TouchableOpacity>
+          </View>
+        </Overlay>
       </SafeAreaView>
     </ScrollView>
   );
@@ -258,10 +382,15 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
+  bottomSheetHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
   bottomSheetTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
   },
   parkingSpotCard: {
     width: 150,
@@ -284,5 +413,40 @@ const styles = StyleSheet.create({
   parkingSpotRating: {
     fontSize: 12,
     color: "#666",
+  },
+  parkingSpotDistance: {
+    fontSize: 12,
+    color: "#666",
+    marginTop: 2,
+  },
+  sortOverlay: {
+    width: 250,
+    borderRadius: 10,
+    padding: 0,
+    backgroundColor: "#fff",
+  },
+  sortOverlayTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  sortOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  sortOptionIcon: {
+    marginRight: 10,
+  },
+  sortOptionText: {
+    fontSize: 16,
+    color: "#333",
   },
 });

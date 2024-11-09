@@ -1,17 +1,23 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
 import { Button } from "@rneui/themed";
 import { Slider } from "@rneui/themed";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 interface PriceFilterProps {
   onFilterChange: (minPrice: number, maxPrice: number) => void;
+  initialMinPrice?: number;
+  initialMaxPrice?: number;
 }
 
-export default function PriceFilter({ onFilterChange }: PriceFilterProps) {
+export default function PriceFilter({
+  onFilterChange,
+  initialMinPrice = 0,
+  initialMaxPrice = 100,
+}: PriceFilterProps) {
   const [isActive, setIsActive] = useState(false);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(100);
+  const [minPrice, setMinPrice] = useState(initialMinPrice);
+  const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
 
   const toggleFilter = () => {
     setIsActive(!isActive);
@@ -51,30 +57,47 @@ export default function PriceFilter({ onFilterChange }: PriceFilterProps) {
         ]}
         onPress={toggleFilter}
       />
-      {isActive && (
-        <View style={styles.dropdown}>
-          <Text>Min Price: ${minPrice}</Text>
-          <Slider
-            value={minPrice}
-            onValueChange={handleMinPriceChange}
-            minimumValue={0}
-            maximumValue={100}
-            step={1}
-            allowTouchTrack
-            thumbStyle={{ height: 20, width: 20, backgroundColor: "#007AFF" }}
-          />
-          <Text>Max Price: ${maxPrice}</Text>
-          <Slider
-            value={maxPrice}
-            onValueChange={handleMaxPriceChange}
-            minimumValue={0}
-            maximumValue={100}
-            step={1}
-            allowTouchTrack
-            thumbStyle={{ height: 20, width: 20, backgroundColor: "#007AFF" }}
-          />
-        </View>
-      )}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isActive}
+        onRequestClose={toggleFilter}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPressOut={toggleFilter}
+        >
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Price Filter</Text>
+            <Text>Min Price: ${minPrice}</Text>
+            <Slider
+              value={minPrice}
+              onValueChange={handleMinPriceChange}
+              minimumValue={0}
+              maximumValue={100}
+              step={1}
+              allowTouchTrack
+              thumbStyle={styles.sliderThumb}
+            />
+            <Text>Max Price: ${maxPrice}</Text>
+            <Slider
+              value={maxPrice}
+              onValueChange={handleMaxPriceChange}
+              minimumValue={0}
+              maximumValue={25}
+              step={1}
+              allowTouchTrack
+              thumbStyle={styles.sliderThumb}
+            />
+            <Button
+              title="Apply"
+              onPress={toggleFilter}
+              buttonStyle={styles.applyButton}
+            />
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -97,16 +120,30 @@ const styles = StyleSheet.create({
   activeFilterButtonText: {
     color: "#fff",
   },
-  dropdown: {
-    position: "absolute",
-    top: 40,
-    left: 0,
-    right: 0,
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
     backgroundColor: "#fff",
-    padding: 10,
-    borderRadius: 5,
-    borderColor: "#ddd",
-    borderWidth: 1,
-    zIndex: 1000,
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  sliderThumb: {
+    height: 20,
+    width: 20,
+    backgroundColor: "#007AFF",
+  },
+  applyButton: {
+    marginTop: 15,
+    backgroundColor: "#007AFF",
   },
 });

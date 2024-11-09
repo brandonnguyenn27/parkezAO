@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { Button, CheckBox } from "@rneui/themed";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -54,20 +61,39 @@ export default function AmenitiesFilter({
         ]}
         onPress={toggleFilter}
       />
-      {isActive && (
-        <ScrollView style={styles.dropdown}>
-          {amenitiesList.map((amenity) => (
-            <CheckBox
-              key={amenity}
-              title={amenity}
-              checked={selectedAmenities.includes(amenity)}
-              onPress={() => toggleAmenity(amenity)}
-              containerStyle={styles.checkboxContainer}
-              textStyle={styles.checkboxText}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isActive}
+        onRequestClose={toggleFilter}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPressOut={toggleFilter}
+        >
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Amenities Filter</Text>
+            <ScrollView style={styles.amenitiesList}>
+              {amenitiesList.map((amenity) => (
+                <CheckBox
+                  key={amenity}
+                  title={amenity}
+                  checked={selectedAmenities.includes(amenity)}
+                  onPress={() => toggleAmenity(amenity)}
+                  containerStyle={styles.checkboxContainer}
+                  textStyle={styles.checkboxText}
+                />
+              ))}
+            </ScrollView>
+            <Button
+              title="Apply"
+              onPress={toggleFilter}
+              buttonStyle={styles.applyButton}
             />
-          ))}
-        </ScrollView>
-      )}
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -90,18 +116,26 @@ const styles = StyleSheet.create({
   activeFilterButtonText: {
     color: "#fff",
   },
-  dropdown: {
-    position: "absolute",
-    top: 40,
-    left: 0,
-    right: 0,
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
     backgroundColor: "#fff",
-    padding: 10,
-    borderRadius: 5,
-    borderColor: "#ddd",
-    borderWidth: 1,
-    zIndex: 1000,
-    maxHeight: 200,
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    maxHeight: "80%",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  amenitiesList: {
+    maxHeight: 300,
   },
   checkboxContainer: {
     backgroundColor: "transparent",
@@ -111,5 +145,9 @@ const styles = StyleSheet.create({
   },
   checkboxText: {
     fontWeight: "normal",
+  },
+  applyButton: {
+    marginTop: 15,
+    backgroundColor: "#007AFF",
   },
 });

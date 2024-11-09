@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,56 +6,37 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Modal,
+  TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Button } from "@rneui/themed";
-
-// Mock data for a specific parking spot
-const MOCK_SPOT_DETAILS = {
-  id: "1",
-  name: "Residential Parking",
-  address: "123 S 4th St, San Jose, CA",
-  price: 2,
-  rating: 4.8,
-  reviews: 25,
-  description:
-    "Convenient residential parking spot in a quiet neighborhood. Easy access to public transportation and local amenities.",
-  amenities: ["24/7 Access", "Well-lit", "Security Camera", "EV Charging"],
-  images: [
-    "https://via.placeholder.com/400x300?text=Parking+Spot+1",
-    "https://via.placeholder.com/400x300?text=Parking+Spot+2",
-    "https://via.placeholder.com/400x300?text=Parking+Spot+3",
-  ],
-  reviewsList: [
-    {
-      id: "1",
-      user: "John D.",
-      rating: 5,
-      comment: "Great spot! Easy to find and very convenient.",
-    },
-    {
-      id: "2",
-      user: "Sarah M.",
-      rating: 4,
-      comment: "Good location, but a bit tight for larger vehicles.",
-    },
-    {
-      id: "3",
-      user: "Mike R.",
-      rating: 5,
-      comment: "Excellent spot, will definitely use again!",
-    },
-  ],
-};
+import { Button, CheckBox } from "@rneui/themed";
+import { ParkingSpot, parkingSpots } from "../data/parking";
 
 export default function SpotDetailsScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const spot = MOCK_SPOT_DETAILS; // In a real app, you'd fetch the spot details based on the ID
+  const spot = parkingSpots.find((s) => s.id === Number(id));
+  const [reportModalVisible, setReportModalVisible] = useState(false);
+  const [reportReasons, setReportReasons] = useState({
+    inaccurateInfo: false,
+    unavailable: false,
+    inappropriate: false,
+    other: false,
+  });
+  const [reportComment, setReportComment] = useState("");
 
-  const renderStars = (rating) => {
+  if (!spot) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text>Parking spot not found</Text>
+      </SafeAreaView>
+    );
+  }
+
+  const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5;
     const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
@@ -78,6 +59,18 @@ export default function SpotDetailsScreen() {
     );
   };
 
+  const handleReportSubmit = () => {
+    console.log("Report submitted:", { reportReasons, reportComment });
+    setReportModalVisible(false);
+    setReportReasons({
+      inaccurateInfo: false,
+      unavailable: false,
+      inappropriate: false,
+      other: false,
+    });
+    setReportComment("");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -89,6 +82,12 @@ export default function SpotDetailsScreen() {
             <Icon name="arrow-back" size={24} color="#007AFF" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Spot Details</Text>
+          <TouchableOpacity
+            onPress={() => setReportModalVisible(true)}
+            style={styles.reportButton}
+          >
+            <Icon name="flag" size={24} color="#FF0000" />
+          </TouchableOpacity>
         </View>
 
         <ScrollView horizontal pagingEnabled style={styles.imageContainer}>
@@ -138,12 +137,120 @@ export default function SpotDetailsScreen() {
             onPress={() => {
               router.push({
                 pathname: "/checkout/[id]",
-                params: { id: spot.id },
+                params: { id: spot.id.toString() },
               });
             }}
           />
         </View>
       </ScrollView>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={reportModalVisible}
+        onRequestClose={() => setReportModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setReportModalVisible(false)}
+            >
+              <Icon name="close" size={24} color="#000" />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>Report this listing</Text>
+            <View style={styles.modalScroll}>
+              <CheckBox
+                title="Inaccurate information"
+                checked={reportReasons.inaccurateInfo}
+                onPress={() =>
+                  setReportReasons((prev) => ({
+                    ...prev,
+                    inaccurateInfo: !prev.inaccurateInfo,
+                  }))
+                }
+                containerStyle={styles.checkboxContainer}
+                textStyle={styles.checkboxText}
+                checkedColor="#007AFF"
+                uncheckedColor="#D1D1D1"
+                checkedIcon="check-square"
+                uncheckedIcon="square-o"
+              />
+              <CheckBox
+                title="Spot unavailable"
+                checked={reportReasons.unavailable}
+                onPress={() =>
+                  setReportReasons((prev) => ({
+                    ...prev,
+                    unavailable: !prev.unavailable,
+                  }))
+                }
+                containerStyle={styles.checkboxContainer}
+                textStyle={styles.checkboxText}
+                checkedColor="#007AFF"
+                uncheckedColor="#D1D1D1"
+                checkedIcon="check-square"
+                uncheckedIcon="square-o"
+              />
+              <CheckBox
+                title="Inappropriate content"
+                checked={reportReasons.inappropriate}
+                onPress={() =>
+                  setReportReasons((prev) => ({
+                    ...prev,
+                    inappropriate: !prev.inappropriate,
+                  }))
+                }
+                containerStyle={styles.checkboxContainer}
+                textStyle={styles.checkboxText}
+                checkedColor="#007AFF"
+                uncheckedColor="#D1D1D1"
+                checkedIcon="check-square"
+                uncheckedIcon="square-o"
+              />
+              <CheckBox
+                title="Other"
+                checked={reportReasons.other}
+                onPress={() =>
+                  setReportReasons((prev) => ({ ...prev, other: !prev.other }))
+                }
+                containerStyle={styles.checkboxContainer}
+                textStyle={styles.checkboxText}
+                checkedColor="#007AFF"
+                uncheckedColor="#D1D1D1"
+                checkedIcon="check-square"
+                uncheckedIcon="square-o"
+              />
+              <TextInput
+                style={styles.reportComment}
+                placeholder="Additional comments"
+                placeholderTextColor="#A1A1A1"
+                multiline
+                numberOfLines={4}
+                value={reportComment}
+                onChangeText={setReportComment}
+              />
+            </View>
+            <View style={styles.modalButtons}>
+              <Button
+                title="Cancel"
+                type="outline"
+                onPress={() => setReportModalVisible(false)}
+                buttonStyle={styles.cancelButton}
+                titleStyle={styles.cancelButtonText}
+                containerStyle={styles.buttonContainer}
+              />
+              <Button
+                title="Submit Report"
+                onPress={handleReportSubmit}
+                buttonStyle={styles.submitButton}
+                titleStyle={styles.submitButtonText}
+                containerStyle={styles.buttonContainer}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -156,6 +263,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
@@ -166,7 +274,9 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 10,
+  },
+  reportButton: {
+    padding: 5,
   },
   imageContainer: {
     height: 300,
@@ -258,5 +368,89 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 15,
     marginTop: 20,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 24,
+    width: "90%",
+    maxWidth: 400,
+  },
+  closeButton: {
+    alignSelf: "flex-end",
+    padding: 8,
+    margin: -8,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 20,
+    textAlign: "center",
+    color: "#000",
+  },
+  modalScroll: {
+    marginBottom: 20,
+  },
+  checkboxContainer: {
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    padding: 0,
+    marginLeft: 0,
+    marginRight: 0,
+    marginBottom: 16,
+  },
+  checkboxText: {
+    fontWeight: "normal",
+    fontSize: 16,
+    color: "#4A4A4A",
+    marginLeft: 8,
+  },
+  reportComment: {
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 8,
+    fontSize: 16,
+    minHeight: 120,
+    textAlignVertical: "top",
+    color: "#000",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  buttonContainer: {
+    flex: 1,
+  },
+  cancelButton: {
+    height: 48,
+    borderRadius: 12,
+    borderColor: "#007AFF",
+    borderWidth: 1,
+    backgroundColor: "transparent",
+  },
+  submitButton: {
+    height: 48,
+    borderRadius: 12,
+    backgroundColor: "#007AFF",
+    borderWidth: 0,
+  },
+  cancelButtonText: {
+    color: "#007AFF",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  submitButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });

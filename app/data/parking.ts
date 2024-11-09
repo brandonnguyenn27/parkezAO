@@ -8,6 +8,16 @@ export interface ParkingSpot {
   rating: number;
   reviews: number;
   amenities: string[];
+  description: string;
+  images: string[];
+  reviewsList: Review[];
+}
+
+interface Review {
+  id: string;
+  user: string;
+  rating: number;
+  comment: string;
 }
 
 export const parkingSpots: ParkingSpot[] = [
@@ -21,6 +31,27 @@ export const parkingSpots: ParkingSpot[] = [
     rating: 4.5,
     reviews: 120,
     amenities: ["Security", "EV Charging", "Covered"],
+    description:
+      "Convenient downtown parking with 24/7 security and EV charging stations.",
+    images: [
+      "https://example.com/downtown_parking_1.jpg",
+      "https://example.com/downtown_parking_2.jpg",
+      "https://example.com/downtown_parking_3.jpg",
+    ],
+    reviewsList: [
+      {
+        id: "1",
+        user: "John D.",
+        rating: 5,
+        comment: "Great location and always clean!",
+      },
+      {
+        id: "2",
+        user: "Sarah M.",
+        rating: 4,
+        comment: "Good security, but can be busy during peak hours.",
+      },
+    ],
   },
   {
     id: 2,
@@ -32,6 +63,26 @@ export const parkingSpots: ParkingSpot[] = [
     rating: 4.0,
     reviews: 85,
     amenities: ["Security", "Wheelchair Accessible", "Valet"],
+    description:
+      "Centrally located garage with valet service and wheelchair accessibility.",
+    images: [
+      "https://example.com/city_center_garage_1.jpg",
+      "https://example.com/city_center_garage_2.jpg",
+    ],
+    reviewsList: [
+      {
+        id: "1",
+        user: "Mike R.",
+        rating: 4,
+        comment: "Valet service is quick and efficient.",
+      },
+      {
+        id: "2",
+        user: "Emily L.",
+        rating: 4,
+        comment: "Appreciate the wheelchair accessibility.",
+      },
+    ],
   },
   {
     id: 3,
@@ -43,6 +94,26 @@ export const parkingSpots: ParkingSpot[] = [
     rating: 3.5,
     reviews: 62,
     amenities: ["EV Charging", "Wheelchair Accessible"],
+    description: "Affordable residential parking with EV charging stations.",
+    images: [
+      "https://example.com/residential_parking_1.jpg",
+      "https://example.com/residential_parking_2.jpg",
+    ],
+    reviewsList: [
+      {
+        id: "1",
+        user: "Alex K.",
+        rating: 3,
+        comment:
+          "Good for overnight parking, but limited daytime availability.",
+      },
+      {
+        id: "2",
+        user: "Lisa W.",
+        rating: 4,
+        comment: "Convenient EV charging for residents.",
+      },
+    ],
   },
   {
     id: 4,
@@ -54,6 +125,27 @@ export const parkingSpots: ParkingSpot[] = [
     rating: 4.2,
     reviews: 95,
     amenities: ["Security", "Covered", "Valet"],
+    description: "Premium street parking with valet service and covered spots.",
+    images: [
+      "https://example.com/street_parking_1.jpg",
+      "https://example.com/street_parking_2.jpg",
+      "https://example.com/street_parking_3.jpg",
+    ],
+    reviewsList: [
+      {
+        id: "1",
+        user: "David H.",
+        rating: 5,
+        comment:
+          "Excellent valet service, always feel safe leaving my car here.",
+      },
+      {
+        id: "2",
+        user: "Rachel T.",
+        rating: 4,
+        comment: "Bit pricey, but worth it for the covered parking.",
+      },
+    ],
   },
   {
     id: 5,
@@ -65,5 +157,26 @@ export const parkingSpots: ParkingSpot[] = [
     rating: 3.8,
     reviews: 73,
     amenities: ["Wheelchair Accessible", "Covered"],
+    description:
+      "Budget-friendly residential parking with covered spots and easy accessibility.",
+    images: [
+      "https://example.com/residential_parking_2_1.jpg",
+      "https://example.com/residential_parking_2_2.jpg",
+    ],
+    reviewsList: [
+      {
+        id: "1",
+        user: "Chris M.",
+        rating: 4,
+        comment: "Great value for covered parking in a residential area.",
+      },
+      {
+        id: "2",
+        user: "Anna P.",
+        rating: 3,
+        comment:
+          "Decent parking, but can be hard to find a spot during evenings.",
+      },
+    ],
   },
 ];

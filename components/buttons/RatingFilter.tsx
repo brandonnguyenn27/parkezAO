@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
 import { Button } from "@rneui/themed";
 import { Slider } from "@rneui/themed";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 interface RatingFilterProps {
   onFilterChange: (rating: number) => void;
+  initialRating?: number;
 }
 
-export default function RatingFilter({ onFilterChange }: RatingFilterProps) {
+export default function RatingFilter({
+  onFilterChange,
+  initialRating = 0,
+}: RatingFilterProps) {
   const [isActive, setIsActive] = useState(false);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(initialRating);
 
   const toggleFilter = () => {
     setIsActive(!isActive);
@@ -37,20 +41,37 @@ export default function RatingFilter({ onFilterChange }: RatingFilterProps) {
         ]}
         onPress={toggleFilter}
       />
-      {isActive && (
-        <View style={styles.dropdown}>
-          <Text>Minimum Rating: {rating.toFixed(1)}</Text>
-          <Slider
-            value={rating}
-            onValueChange={handleRatingChange}
-            minimumValue={0}
-            maximumValue={5}
-            step={0.1}
-            allowTouchTrack
-            thumbStyle={{ height: 20, width: 20, backgroundColor: "#007AFF" }}
-          />
-        </View>
-      )}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isActive}
+        onRequestClose={toggleFilter}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPressOut={toggleFilter}
+        >
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Rating Filter</Text>
+            <Text>Minimum Rating: {rating.toFixed(1)} stars</Text>
+            <Slider
+              value={rating}
+              onValueChange={handleRatingChange}
+              minimumValue={0}
+              maximumValue={5}
+              step={0.5}
+              allowTouchTrack
+              thumbStyle={styles.sliderThumb}
+            />
+            <Button
+              title="Apply"
+              onPress={toggleFilter}
+              buttonStyle={styles.applyButton}
+            />
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -73,16 +94,30 @@ const styles = StyleSheet.create({
   activeFilterButtonText: {
     color: "#fff",
   },
-  dropdown: {
-    position: "absolute",
-    top: 40,
-    left: 0,
-    right: 0,
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
     backgroundColor: "#fff",
-    padding: 10,
-    borderRadius: 5,
-    borderColor: "#ddd",
-    borderWidth: 1,
-    zIndex: 1000,
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  sliderThumb: {
+    height: 20,
+    width: 20,
+    backgroundColor: "#007AFF",
+  },
+  applyButton: {
+    marginTop: 15,
+    backgroundColor: "#007AFF",
   },
 });
