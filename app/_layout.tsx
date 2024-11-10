@@ -33,7 +33,23 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
+        <Stack.Screen name="landing" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="oauthsignup" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="termsandservices"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="create-profile" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="spot-details/[id]"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="checkout/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="host" options={{ headerShown: false }} />
+
+        <Stack.Screen name="hostlistings" options={{ headerShown: false }} />
+        <Stack.Screen name="host-terms" options={{ headerShown: false }} />
 
         <Stack.Screen name="+not-found" />
       </Stack>

@@ -107,6 +107,13 @@ export default function SpotDetailsScreen() {
           </View>
           <Text style={styles.price}>${spot.price}/hr</Text>
 
+          <View style={styles.availabilityContainer}>
+            <Icon name="access-time" size={24} color="#007AFF" />
+            <Text style={styles.availabilityText}>
+              Available: {spot.startTime} - {spot.endTime}
+            </Text>
+          </View>
+
           <Text style={styles.sectionTitle}>Description</Text>
           <Text style={styles.description}>{spot.description}</Text>
 
@@ -316,7 +323,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "#007AFF",
+    marginBottom: 10,
+  },
+  availabilityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#E6F2FF",
+    padding: 10,
+    borderRadius: 8,
     marginBottom: 20,
+  },
+  availabilityText: {
+    fontSize: 16,
+    color: "#007AFF",
+    marginLeft: 10,
   },
   sectionTitle: {
     fontSize: 18,

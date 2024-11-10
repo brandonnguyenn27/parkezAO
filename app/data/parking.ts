@@ -11,6 +11,8 @@ export interface ParkingSpot {
   description: string;
   images: string[];
   reviewsList: Review[];
+  startTime: string; // New field
+  endTime: string; // New field
 }
 
 interface Review {
@@ -52,6 +54,8 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Good security, but can be busy during peak hours.",
       },
     ],
+    startTime: "06:00",
+    endTime: "22:00",
   },
   {
     id: 2,
@@ -83,6 +87,8 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Appreciate the wheelchair accessibility.",
       },
     ],
+    startTime: "07:00",
+    endTime: "23:00",
   },
   {
     id: 3,
@@ -114,6 +120,8 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Convenient EV charging for residents.",
       },
     ],
+    startTime: "18:00",
+    endTime: "08:00",
   },
   {
     id: 4,
@@ -146,6 +154,8 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Bit pricey, but worth it for the covered parking.",
       },
     ],
+    startTime: "08:00",
+    endTime: "20:00",
   },
   {
     id: 5,
@@ -178,6 +188,8 @@ export const parkingSpots: ParkingSpot[] = [
           "Decent parking, but can be hard to find a spot during evenings.",
       },
     ],
+    startTime: "17:00",
+    endTime: "09:00",
   },
   {
     id: 6,
@@ -217,5 +229,7 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Clean and secure. Appreciate the EV charging stations.",
       },
     ],
+    startTime: "00:00",
+    endTime: "23:59",
   },
 ];

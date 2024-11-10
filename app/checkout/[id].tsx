@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,24 +6,60 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { parkingSpots } from "../data/parking";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
+import { CheckBox } from "@rneui/themed";
 
 export default function CheckoutView() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const spot = parkingSpots.find((spot) => spot.id === Number(id));
-  const [selectedDuration, setSelectedDuration] = useState(1);
+
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showStartTimePicker, setShowStartTimePicker] = useState(false);
+  const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+
   const [showCreditCardForm, setShowCreditCardForm] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
-  const [zipCode, setZipCode] = useState(""); // Added zip code state
+  const [zipCode, setZipCode] = useState("");
+  const [cardholderName, setCardholderName] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [saveCardInfo, setSaveCardInfo] = useState(false);
 
-  const durations = [1, 2, 3, 4];
+  const [useSavedPayment, setUseSavedPayment] = useState(false);
+  const [savedPayments, setSavedPayments] = useState([
+    { id: 1, cardNumber: "**** **** **** 1234", cardholderName: "John Doe" },
+    { id: 2, cardNumber: "**** **** **** 5678", cardholderName: "Jane Smith" },
+  ]);
+
+  useEffect(() => {
+    if (spot) {
+      const [startHour, startMinute] = spot.startTime.split(":").map(Number);
+      const [endHour, endMinute] = spot.endTime.split(":").map(Number);
+
+      const newStartTime = new Date(selectedDate);
+      newStartTime.setHours(startHour, startMinute, 0, 0);
+      setStartTime(newStartTime);
+
+      const newEndTime = new Date(selectedDate);
+      newEndTime.setHours(endHour, endMinute, 0, 0);
+      setEndTime(newEndTime);
+    }
+  }, [selectedDate, spot]);
 
   if (!spot) {
     return (
@@ -34,16 +70,90 @@ export default function CheckoutView() {
   }
 
   const handleConfirmBooking = () => {
-    // Implement booking confirmation logic here
+    if (useSavedPayment) {
+      // Process payment with saved payment information
+    } else if (
+      !cardholderName ||
+      !cardNumber ||
+      !expiryDate ||
+      !cvv ||
+      !address ||
+      !city ||
+      !state ||
+      !zipCode
+    ) {
+      Alert.alert("Error", "Please fill in all payment details");
+      return;
+    }
+
+    if (saveCardInfo) {
+      // Save card information logic here
+      const newSavedPayment = {
+        id: savedPayments.length + 1,
+        cardNumber: `**** **** **** ${cardNumber.slice(-4)}`,
+        cardholderName: cardholderName,
+      };
+      setSavedPayments([...savedPayments, newSavedPayment]);
+    }
+
+    const duration =
+      (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+    const totalPrice = (spot.price * duration).toFixed(2);
+
     router.push({
       pathname: "/",
       params: {
         justCheckedOut: "true",
         spotId: spot.id,
-        duration: selectedDuration,
+        date: selectedDate.toISOString().split("T")[0],
+        startTime: startTime.toTimeString().split(" ")[0],
+        endTime: endTime.toTimeString().split(" ")[0],
+        totalPrice: totalPrice,
       },
     });
   };
+
+  const onDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || new Date();
+    setShowDatePicker(false);
+    setSelectedDate(currentDate);
+  };
+
+  const onStartTimeChange = (event, selectedTime) => {
+    const currentTime = selectedTime || startTime;
+    setShowStartTimePicker(Platform.OS === "ios");
+    setStartTime(currentTime);
+  };
+
+  const onEndTimeChange = (event, selectedTime) => {
+    const currentTime = selectedTime || endTime;
+    setShowEndTimePicker(Platform.OS === "ios");
+    setEndTime(currentTime);
+  };
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
+
+  const calculateDuration = () => {
+    const duration =
+      (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+    return Math.max(duration, 0).toFixed(1);
+  };
+
+  const generateTimeOptions = () => {
+    const options = [];
+    for (let i = 0; i < 24; i++) {
+      for (let j = 0; j < 60; j += 30) {
+        const hour = i.toString().padStart(2, "0");
+        const minute = j.toString().padStart(2, "0");
+        options.push(`${hour}:${minute}`);
+      }
+    }
+    return options;
+  };
+
+  const timeOptions = generateTimeOptions();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -61,41 +171,136 @@ export default function CheckoutView() {
           <Text style={styles.spotName}>{spot.name}</Text>
           <Text style={styles.spotAddress}>{spot.address}</Text>
           <Text style={styles.spotPrice}>${spot.price}/hr</Text>
+          <Text style={styles.spotAvailability}>
+            Available: {spot.startTime} - {spot.endTime}
+          </Text>
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Select Duration</Text>
-          <View style={styles.durationButtons}>
-            {durations.map((duration) => (
-              <TouchableOpacity
-                key={duration}
-                style={[
-                  styles.durationButton,
-                  selectedDuration === duration &&
-                    styles.selectedDurationButton,
-                ]}
-                onPress={() => setSelectedDuration(duration)}
-              >
-                <Text
-                  style={[
-                    styles.durationButtonText,
-                    selectedDuration === duration &&
-                      styles.selectedDurationButtonText,
-                  ]}
-                >
-                  {duration}h
-                </Text>
-              </TouchableOpacity>
-            ))}
+          <Text style={styles.sectionTitle}>Select Date and Time</Text>
+          <TouchableOpacity
+            style={styles.dateTimeButton}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text style={styles.dateTimeButtonText}>
+              {selectedDate.toDateString()}
+            </Text>
+            <Icon name="calendar-today" size={24} color="#007AFF" />
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={selectedDate}
+              mode="date"
+              display="default"
+              onChange={onDateChange}
+            />
+          )}
+          <View style={styles.timeContainer}>
+            <TouchableOpacity
+              style={styles.timeButton}
+              onPress={() => setShowStartTimePicker(true)}
+            >
+              <Text style={styles.timeButtonText}>
+                Start: {formatTime(startTime)}
+              </Text>
+              <Icon name="access-time" size={24} color="#007AFF" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.timeButton}
+              onPress={() => setShowEndTimePicker(true)}
+            >
+              <Text style={styles.timeButtonText}>
+                End: {formatTime(endTime)}
+              </Text>
+              <Icon name="access-time" size={24} color="#007AFF" />
+            </TouchableOpacity>
           </View>
+          {showStartTimePicker && (
+            <Picker
+              selectedValue={formatTime(startTime)}
+              onValueChange={(itemValue) => {
+                const [hours, minutes] = itemValue.split(":");
+                const newStartTime = new Date(startTime);
+                newStartTime.setHours(parseInt(hours, 10));
+                newStartTime.setMinutes(parseInt(minutes, 10));
+                setStartTime(newStartTime);
+                setShowStartTimePicker(false);
+              }}
+            >
+              {timeOptions.map((time) => (
+                <Picker.Item key={time} label={time} value={time} />
+              ))}
+            </Picker>
+          )}
+          {showEndTimePicker && (
+            <Picker
+              selectedValue={formatTime(endTime)}
+              onValueChange={(itemValue) => {
+                const [hours, minutes] = itemValue.split(":");
+                const newEndTime = new Date(endTime);
+                newEndTime.setHours(parseInt(hours, 10));
+                newEndTime.setMinutes(parseInt(minutes, 10));
+                setEndTime(newEndTime);
+                setShowEndTimePicker(false);
+              }}
+            >
+              {timeOptions.map((time) => (
+                <Picker.Item key={time} label={time} value={time} />
+              ))}
+            </Picker>
+          )}
+          <Text style={styles.durationText}>
+            Duration: {calculateDuration()} hours
+          </Text>
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Payment Method</Text>
+          {savedPayments.length > 0 && (
+            <TouchableOpacity
+              style={styles.paymentButton}
+              onPress={() => setUseSavedPayment(!useSavedPayment)}
+            >
+              <Icon
+                name={
+                  useSavedPayment
+                    ? "radio-button-checked"
+                    : "radio-button-unchecked"
+                }
+                size={24}
+                color="#007AFF"
+                style={styles.paymentIcon}
+              />
+              <Text style={styles.paymentButtonText}>Use Saved Payment</Text>
+            </TouchableOpacity>
+          )}
+          {useSavedPayment && (
+            <Picker
+              selectedValue={savedPayments[0].id}
+              onValueChange={(itemValue) => {
+                // Handle saved payment selection
+              }}
+            >
+              {savedPayments.map((payment) => (
+                <Picker.Item
+                  key={payment.id}
+                  label={`${payment.cardholderName} - ${payment.cardNumber}`}
+                  value={payment.id}
+                />
+              ))}
+            </Picker>
+          )}
           <TouchableOpacity
             style={styles.paymentButton}
-            onPress={() => setShowCreditCardForm(!showCreditCardForm)}
+            onPress={() => {
+              setShowCreditCardForm(!showCreditCardForm);
+              setUseSavedPayment(false);
+            }}
           >
             <Icon
-              name="credit-card"
+              name={
+                !useSavedPayment
+                  ? "radio-button-checked"
+                  : "radio-button-unchecked"
+              }
               size={24}
               color="#007AFF"
               style={styles.paymentIcon}
@@ -104,6 +309,12 @@ export default function CheckoutView() {
           </TouchableOpacity>
           {showCreditCardForm && (
             <View style={styles.creditCardForm}>
+              <TextInput
+                style={styles.input}
+                placeholder="Cardholder Name"
+                value={cardholderName}
+                onChangeText={setCardholderName}
+              />
               <TextInput
                 style={styles.input}
                 placeholder="Card Number"
@@ -128,15 +339,41 @@ export default function CheckoutView() {
                   keyboardType="number-pad"
                   maxLength={3}
                 />
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Address"
+                value={address}
+                onChangeText={setAddress}
+              />
+              <View style={styles.row}>
                 <TextInput
                   style={[styles.input, styles.halfInput]}
-                  placeholder="Zip Code"
-                  value={zipCode}
-                  onChangeText={setZipCode}
-                  keyboardType="number-pad"
-                  maxLength={5}
+                  placeholder="City"
+                  value={city}
+                  onChangeText={setCity}
+                />
+                <TextInput
+                  style={[styles.input, styles.halfInput]}
+                  placeholder="State"
+                  value={state}
+                  onChangeText={setState}
                 />
               </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Zip Code"
+                value={zipCode}
+                onChangeText={setZipCode}
+                keyboardType="number-pad"
+                maxLength={5}
+              />
+              <CheckBox
+                title="Save this card for future use"
+                checked={saveCardInfo}
+                onPress={() => setSaveCardInfo(!saveCardInfo)}
+                containerStyle={styles.checkboxContainer}
+              />
             </View>
           )}
           <TouchableOpacity style={styles.applePayButton}>
@@ -153,10 +390,10 @@ export default function CheckoutView() {
           <Text style={styles.sectionTitle}>Summary</Text>
           <View style={styles.summaryRow}>
             <Text style={styles.summaryText}>
-              Parking Fee ({selectedDuration}h)
+              Parking Fee ({calculateDuration()}h)
             </Text>
             <Text style={styles.summaryPrice}>
-              ${(spot.price * selectedDuration).toFixed(2)}
+              ${(spot.price * parseFloat(calculateDuration())).toFixed(2)}
             </Text>
           </View>
           <View style={styles.summaryRow}>
@@ -166,7 +403,7 @@ export default function CheckoutView() {
           <View style={[styles.summaryRow, styles.totalRow]}>
             <Text style={styles.totalText}>Total</Text>
             <Text style={styles.totalPrice}>
-              ${(spot.price * selectedDuration + 2).toFixed(2)}
+              ${(spot.price * parseFloat(calculateDuration()) + 2).toFixed(2)}
             </Text>
           </View>
         </View>
@@ -175,12 +412,6 @@ export default function CheckoutView() {
           onPress={handleConfirmBooking}
         >
           <Text style={styles.confirmButtonText}>Confirm Booking</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.homeButton}
-          onPress={() => router.push("/")}
-        >
-          <Text style={styles.homeButtonText}>Back to Home</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
@@ -233,6 +464,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#007AFF",
+    marginBottom: 5,
+  },
+  spotAvailability: {
+    fontSize: 14,
+    color: "#666",
   },
   section: {
     backgroundColor: "#fff",
@@ -250,28 +486,43 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
-  durationButtons: {
+  dateTimeButton: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  durationButton: {
-    width: 70,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#007AFF",
-    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
   },
-  selectedDurationButton: {
-    backgroundColor: "#007AFF",
+  dateTimeButtonText: {
+    fontSize: 16,
+    color: "#333",
   },
-  durationButtonText: {
-    fontSize: 14,
+  timeContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  timeButton: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  timeButtonText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  durationText: {
+    fontSize: 16,
+    fontWeight: "bold",
     color: "#007AFF",
-  },
-  selectedDurationButtonText: {
-    color: "#fff",
+    marginTop: 10,
   },
   paymentButton: {
     flexDirection: "row",
@@ -317,10 +568,9 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    gap: 8,
   },
   halfInput: {
-    flex: 1,
+    width: "48%",
   },
   summaryRow: {
     flexDirection: "row",
@@ -332,8 +582,7 @@ const styles = StyleSheet.create({
   },
   summaryPrice: {
     fontSize: 16,
-    textAlign: "right",
-    minWidth: 70,
+    fontWeight: "bold",
   },
   totalRow: {
     borderTopWidth: 1,
@@ -348,32 +597,23 @@ const styles = StyleSheet.create({
   totalPrice: {
     fontWeight: "bold",
     fontSize: 18,
-    textAlign: "right",
-    minWidth: 70,
   },
   confirmButton: {
     backgroundColor: "#007AFF",
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: 20,
   },
   confirmButtonText: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
   },
-  homeButton: {
-    backgroundColor: "#fff",
-    paddingVertical: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#007AFF",
-  },
-  homeButtonText: {
-    color: "#007AFF",
-    fontSize: 18,
-    fontWeight: "bold",
+  checkboxContainer: {
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    padding: 0,
+    margin: 0,
   },
 });

@@ -7,35 +7,60 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
 
 // Mock data for bookings
-const currentBookings = [
-  { id: "1", location: "123 Main St", date: "2023-06-15", time: "14:00-16:00" },
-  { id: "2", location: "456 Elm St", date: "2023-06-18", time: "09:00-11:00" },
+const initialCurrentBookings = [
+  {
+    id: "1",
+    location: "123 Main St",
+    date: "11-06-2024",
+    time: "2:00 PM - 4:00 PM",
+  },
+  {
+    id: "2",
+    location: "456 Elm St",
+    date: "11-09-2024",
+    time: "9:00 PM - 11:00 PM",
+  },
 ];
 
-const pastBookings = [
-  { id: "3", location: "789 Oak St", date: "2023-06-01", time: "10:00-12:00" },
-  { id: "4", location: "321 Pine St", date: "2023-05-28", time: "13:00-15:00" },
+const initialPastBookings = [
+  {
+    id: "3",
+    location: "789 Oak St",
+    date: "06-01-2024",
+    time: "10:00 AM - 12:00 PM",
+  },
+  {
+    id: "4",
+    location: "321 Pine St",
+    date: "05-28-2024",
+    time: "1:00 PM - 3:00 PM",
+  },
 ];
 
 export default function BookingsScreen() {
+  const [currentBookings, setCurrentBookings] = useState(
+    initialCurrentBookings
+  );
+  const [pastBookings, setPastBookings] = useState(initialPastBookings);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
+  const [isCurrentBooking, setIsCurrentBooking] = useState(false);
 
   const renderBookingItem = ({ item, isPast }) => (
     <TouchableOpacity
       style={styles.bookingItem}
       onPress={() => {
-        if (isPast) {
-          setSelectedBooking(item);
-          setModalVisible(true);
-        }
+        setSelectedBooking(item);
+        setIsCurrentBooking(!isPast);
+        setModalVisible(true);
       }}
     >
       <View style={styles.bookingInfo}>
@@ -44,7 +69,7 @@ export default function BookingsScreen() {
           {item.date} | {item.time}
         </Text>
       </View>
-      {isPast && <FontAwesome name="chevron-right" size={20} color="#007AFF" />}
+      <FontAwesome name="chevron-right" size={20} color="#007AFF" />
     </TouchableOpacity>
   );
 
@@ -72,6 +97,36 @@ export default function BookingsScreen() {
     setModalVisible(false);
     setRating(0);
     setReview("");
+  };
+
+  const handleCancelBooking = () => {
+    Alert.alert(
+      "Cancel Booking",
+      "Are you sure you want to cancel this booking?",
+      [
+        {
+          text: "No",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => {
+            setCurrentBookings(
+              currentBookings.filter(
+                (booking) => booking.id !== selectedBooking.id
+              )
+            );
+            setModalVisible(false);
+          },
+        },
+      ]
+    );
+  };
+
+  const handleChangeBooking = () => {
+    // Here you would typically navigate to a screen to change the booking
+    console.log("Changing booking:", selectedBooking);
+    setModalVisible(false);
   };
 
   return (
@@ -122,23 +177,46 @@ export default function BookingsScreen() {
                   Time: {selectedBooking.time}
                 </Text>
 
-                <Text style={styles.ratingTitle}>Leave a Rating</Text>
-                <View style={styles.starsContainer}>{renderStars()}</View>
+                {isCurrentBooking ? (
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={[styles.actionButton, styles.cancelButton]}
+                      onPress={handleCancelBooking}
+                    >
+                      <Text style={styles.actionButtonText}>
+                        Cancel Booking
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.actionButton, styles.changeButton]}
+                      onPress={handleChangeBooking}
+                    >
+                      <Text style={styles.actionButtonText}>
+                        Change Booking
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View>
+                    <Text style={styles.ratingTitle}>Leave a Rating</Text>
+                    <View style={styles.starsContainer}>{renderStars()}</View>
 
-                <TextInput
-                  style={styles.reviewInput}
-                  placeholder="Write your review here..."
-                  multiline
-                  value={review}
-                  onChangeText={setReview}
-                />
+                    <TextInput
+                      style={styles.reviewInput}
+                      placeholder="Write your review here..."
+                      multiline
+                      value={review}
+                      onChangeText={setReview}
+                    />
 
-                <TouchableOpacity
-                  style={styles.submitButton}
-                  onPress={handleSubmitRating}
-                >
-                  <Text style={styles.submitButtonText}>Submit Rating</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.submitButton}
+                      onPress={handleSubmitRating}
+                    >
+                      <Text style={styles.submitButtonText}>Submit Rating</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
             )}
           </View>
@@ -257,6 +335,29 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: "#fff",
     fontSize: 18,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  actionButton: {
+    flex: 1,
+    borderRadius: 10,
+    padding: 15,
+    alignItems: "center",
+    marginHorizontal: 5,
+  },
+  cancelButton: {
+    backgroundColor: "#FF3B30",
+  },
+  changeButton: {
+    backgroundColor: "#007AFF",
+  },
+  actionButtonText: {
+    color: "#fff",
+    fontSize: 16,
     fontWeight: "bold",
   },
 });

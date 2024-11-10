@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Button } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
+import { hostParkingSpots } from "../data/hostparking";
 
 // Mock user data (replace this with actual data from your backend or state management)
 const mockUser = {
@@ -62,7 +63,7 @@ export default function ProfileScreen() {
 
         <TouchableOpacity
           style={styles.hostButton}
-          onPress={() => router.push("/host")}
+          onPress={() => router.push("/host-terms")}
         >
           <FontAwesome
             name="home"
@@ -81,6 +82,12 @@ export default function ProfileScreen() {
             onPress={() => {
               /* Navigate to edit profile */
             }}
+          />
+          <SettingItem
+            icon="list"
+            title="Your Listings"
+            value={`${hostParkingSpots.length} listings`}
+            onPress={() => router.push("/hostlistings")}
           />
           <SettingItem
             icon="envelope"
