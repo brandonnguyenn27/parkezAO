@@ -8,53 +8,69 @@ import {
   Modal,
   TextInput,
   Alert,
+  Image,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
+import { parkingSpots, ParkingSpot } from "../data/parking";
 
-// Mock data for bookings
-const initialCurrentBookings = [
-  {
-    id: "1",
-    location: "123 Main St",
-    date: "11-06-2024",
-    time: "2:00 PM - 4:00 PM",
-  },
-  {
-    id: "2",
-    location: "456 Elm St",
-    date: "11-09-2024",
-    time: "9:00 PM - 11:00 PM",
-  },
-];
-
-const initialPastBookings = [
-  {
-    id: "3",
-    location: "789 Oak St",
-    date: "06-01-2024",
-    time: "10:00 AM - 12:00 PM",
-  },
-  {
-    id: "4",
-    location: "321 Pine St",
-    date: "05-28-2024",
-    time: "1:00 PM - 3:00 PM",
-  },
-];
+interface Booking {
+  id: string;
+  spotId: number;
+  location: string;
+  date: string;
+  time: string;
+}
 
 export default function BookingsScreen() {
-  const [currentBookings, setCurrentBookings] = useState(
-    initialCurrentBookings
-  );
-  const [pastBookings, setPastBookings] = useState(initialPastBookings);
-  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [currentBookings, setCurrentBookings] = useState<Booking[]>([
+    {
+      id: "1",
+      spotId: parkingSpots[0].id,
+      location: parkingSpots[0].name,
+      date: "11-06-2024",
+      time: "2:00 PM - 4:00 PM", // 2-hour booking
+    },
+    {
+      id: "2",
+      spotId: parkingSpots[1].id,
+      location: parkingSpots[1].name,
+      date: "11-09-2024",
+      time: "7:00 PM - 10:00 PM", // 3-hour booking
+    },
+  ]);
+
+  const [pastBookings, setPastBookings] = useState<Booking[]>([
+    {
+      id: "3",
+      spotId: parkingSpots[2].id,
+      location: parkingSpots[2].name,
+      date: "06-01-2024",
+      time: "10:00 AM - 11:30 AM", // 1.5-hour booking
+    },
+    {
+      id: "4",
+      spotId: parkingSpots[3].id,
+      location: parkingSpots[3].name,
+      date: "05-28-2024",
+      time: "1:00 PM - 3:00 PM", // 2-hour booking
+    },
+  ]);
+
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [isCurrentBooking, setIsCurrentBooking] = useState(false);
 
-  const renderBookingItem = ({ item, isPast }) => (
+  const renderBookingItem = ({
+    item,
+    isPast,
+  }: {
+    item: Booking;
+    isPast: boolean;
+  }) => (
     <TouchableOpacity
       style={styles.bookingItem}
       onPress={() => {
@@ -91,7 +107,6 @@ export default function BookingsScreen() {
   };
 
   const handleSubmitRating = () => {
-    // Here you would typically send the rating and review to your backend
     console.log("Submitting rating:", rating);
     console.log("Submitting review:", review);
     setModalVisible(false);
@@ -111,12 +126,14 @@ export default function BookingsScreen() {
         {
           text: "Yes",
           onPress: () => {
-            setCurrentBookings(
-              currentBookings.filter(
-                (booking) => booking.id !== selectedBooking.id
-              )
-            );
-            setModalVisible(false);
+            if (selectedBooking) {
+              setCurrentBookings(
+                currentBookings.filter(
+                  (booking) => booking.id !== selectedBooking.id
+                )
+              );
+              setModalVisible(false);
+            }
           },
         },
       ]
@@ -124,9 +141,12 @@ export default function BookingsScreen() {
   };
 
   const handleChangeBooking = () => {
-    // Here you would typically navigate to a screen to change the booking
     console.log("Changing booking:", selectedBooking);
     setModalVisible(false);
+  };
+
+  const getSpotDetails = (spotId: number): ParkingSpot | undefined => {
+    return parkingSpots.find((spot) => spot.id === spotId);
   };
 
   return (
@@ -167,6 +187,14 @@ export default function BookingsScreen() {
             {selectedBooking && (
               <View>
                 <Text style={styles.modalTitle}>Booking Details</Text>
+                {selectedBooking.spotId && (
+                  <Image
+                    source={{
+                      uri: getSpotDetails(selectedBooking.spotId)?.images[0],
+                    }}
+                    style={styles.modalImage}
+                  />
+                )}
                 <Text style={styles.modalText}>
                   Location: {selectedBooking.location}
                 </Text>
@@ -197,10 +225,9 @@ export default function BookingsScreen() {
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View>
+                  <ScrollView contentContainerStyle={styles.pastBookingContent}>
                     <Text style={styles.ratingTitle}>Leave a Rating</Text>
                     <View style={styles.starsContainer}>{renderStars()}</View>
-
                     <TextInput
                       style={styles.reviewInput}
                       placeholder="Write your review here..."
@@ -208,14 +235,13 @@ export default function BookingsScreen() {
                       value={review}
                       onChangeText={setReview}
                     />
-
                     <TouchableOpacity
                       style={styles.submitButton}
                       onPress={handleSubmitRating}
                     >
                       <Text style={styles.submitButtonText}>Submit Rating</Text>
                     </TouchableOpacity>
-                  </View>
+                  </ScrollView>
                 )}
               </View>
             )}
@@ -286,6 +312,7 @@ const styles = StyleSheet.create({
     padding: 20,
     width: "90%",
     maxHeight: "80%",
+    flex: 1,
   },
   closeButton: {
     alignSelf: "flex-end",
@@ -296,6 +323,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
     color: "#333",
+  },
+  modalImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 15,
   },
   modalText: {
     fontSize: 16,
@@ -322,7 +355,7 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderRadius: 10,
     padding: 10,
-    height: 100,
+    height: 50,
     textAlignVertical: "top",
     marginBottom: 20,
   },
@@ -359,5 +392,9 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  pastBookingContent: {
+    flexGrow: 1,
+    justifyContent: "space-between",
   },
 });

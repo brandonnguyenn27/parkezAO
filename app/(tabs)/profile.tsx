@@ -16,16 +16,21 @@ import { hostParkingSpots } from "../data/hostparking";
 
 // Mock user data (replace this with actual data from your backend or state management)
 const mockUser = {
-  name: "John Doe",
-  email: "john.doe@example.com",
+  name: "Josephine Yu",
+  email: "josephine.yu.ao@gmail.com",
   phone: "+1 (555) 123-4567",
   profilePicture: "https://i.ibb.co/5BkYjh2/DSC-0837.jpg",
+  cars: [
+    { id: 1, make: "Toyota", model: "Camry", year: 2020 },
+    { id: 2, make: "Honda", model: "Civic", year: 2019 },
+  ],
 };
 
 export default function ProfileScreen() {
   const router = useRouter();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+  const [userCars, setUserCars] = useState(mockUser.cars);
 
   const SettingItem = ({ icon, title, value, onPress, isSwitch = false }) => (
     <TouchableOpacity style={styles.settingItem} onPress={onPress}>
@@ -79,6 +84,7 @@ export default function ProfileScreen() {
           <SettingItem
             icon="user"
             title="Edit Profile"
+            value="Edit your profile"
             onPress={() => {
               /* Navigate to edit profile */
             }}
@@ -108,9 +114,16 @@ export default function ProfileScreen() {
           <SettingItem
             icon="lock"
             title="Change Password"
+            value=""
             onPress={() => {
               /* Navigate to change password */
             }}
+          />
+          <SettingItem
+            icon="car"
+            title="Cars"
+            value={`${userCars.length} cars`}
+            onPress={() => router.push("/cars")}
           />
         </View>
 

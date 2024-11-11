@@ -11,8 +11,8 @@ export interface ParkingSpot {
   description: string;
   images: string[];
   reviewsList: Review[];
-  startTime: string; // New field
-  endTime: string; // New field
+  startTime: string; // Updated to military time format
+  endTime: string; // Updated to military time format
   distance: number; // Mock distance field
 }
 
@@ -51,9 +51,9 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Good security, but can be busy during peak hours.",
       },
     ],
-    startTime: "06:00",
-    endTime: "22:00",
-    distance: 0.2, // Mock distance field
+    startTime: "06:00", // Updated to military time format
+    endTime: "22:00", // Updated to military time format
+    distance: Math.random() * 5, // Mock distance field
   },
   {
     id: 2,
@@ -82,9 +82,9 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Appreciate the wheelchair accessibility.",
       },
     ],
-    startTime: "07:00",
-    endTime: "23:00",
-    distance: 0.7, // Mock distance field
+    startTime: "07:00", // Updated to military time format
+    endTime: "23:00", // Updated to military time format
+    distance: Math.random() * 5, // Mock distance field
   },
   {
     id: 3,
@@ -113,9 +113,9 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Convenient EV charging for residents.",
       },
     ],
-    startTime: "18:00",
-    endTime: "08:00",
-    distance: 3.1, // Mock distance field
+    startTime: "18:00", // Updated to military time format
+    endTime: "08:00", // Updated to military time format
+    distance: Math.random() * 5, // Mock distance field
   },
   {
     id: 4,
@@ -144,15 +144,15 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Bit pricey, but worth it for the covered parking.",
       },
     ],
-    startTime: "08:00",
-    endTime: "20:00",
+    startTime: "08:00", // Updated to military time format
+    endTime: "20:00", // Updated to military time format
     distance: 0.4, // Mock distance field
   },
   {
     id: 5,
     name: "Residential Parking",
     address: "654 4th St, San Jose, CA 95112",
-    price: 3.5,
+    price: 2.25,
     latitude: 37.3395,
     longitude: -121.8853,
     rating: 3.8,
@@ -160,6 +160,8 @@ export const parkingSpots: ParkingSpot[] = [
     amenities: ["Wheelchair Accessible", "Covered"],
     description:
       "Budget-friendly residential parking with covered spots and easy accessibility.",
+    startTime: "17:00", // Updated to military time format
+    endTime: "09:00", // Updated to military time format
     images: [
       "https://i.ibb.co/DRZ7zRv/148e8d62-058c-41a9-bc55-0a2568e4d28d.jpg",
     ],
@@ -178,9 +180,7 @@ export const parkingSpots: ParkingSpot[] = [
           "Decent parking, but can be hard to find a spot during evenings.",
       },
     ],
-    startTime: "17:00",
-    endTime: "09:00",
-    distance: 1.2, // Mock distance field
+    distance: Math.random() * 5, // Mock distance field
   },
   {
     id: 6,
@@ -220,8 +220,8 @@ export const parkingSpots: ParkingSpot[] = [
         comment: "Clean and secure. Appreciate the EV charging stations.",
       },
     ],
-    startTime: "00:00",
-    endTime: "23:59",
-    distance: 50.2, // Mock distance field
+    startTime: "00:00", // Updated to military time format
+    endTime: "23:59", // Updated to military time format
+    distance: Math.random() * 5, // Mock distance field
   },
 ];

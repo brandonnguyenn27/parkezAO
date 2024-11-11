@@ -55,6 +55,7 @@ export default function RootLayout() {
 
         <Stack.Screen name="hostlistings" options={{ headerShown: false }} />
         <Stack.Screen name="host-terms" options={{ headerShown: false }} />
+        <Stack.Screen name="cars" options={{ headerShown: false }} />
 
         <Stack.Screen name="+not-found" />
       </Stack>

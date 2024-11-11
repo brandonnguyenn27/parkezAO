@@ -68,6 +68,7 @@ export default function CreateProfileScreen() {
             <TextInput
               style={styles.input}
               placeholder="Username"
+              placeholderTextColor={"#999"}
               value={username}
               onChangeText={setUsername}
             />
@@ -83,6 +84,7 @@ export default function CreateProfileScreen() {
               style={styles.input}
               placeholder="First Name"
               value={firstName}
+              placeholderTextColor={"#999"}
               onChangeText={setFirstName}
             />
           </View>
@@ -96,6 +98,7 @@ export default function CreateProfileScreen() {
             <TextInput
               style={styles.input}
               placeholder="Last Name"
+              placeholderTextColor={"#999"}
               value={lastName}
               onChangeText={setLastName}
             />
@@ -110,6 +113,7 @@ export default function CreateProfileScreen() {
             <TextInput
               style={styles.input}
               placeholder="Address"
+              placeholderTextColor={"#999"}
               value={address}
               onChangeText={setAddress}
             />
@@ -124,6 +128,7 @@ export default function CreateProfileScreen() {
             <TextInput
               style={styles.input}
               placeholder="City"
+              placeholderTextColor={"#999"}
               value={city}
               onChangeText={setCity}
             />
@@ -138,6 +143,7 @@ export default function CreateProfileScreen() {
             <TextInput
               style={styles.input}
               placeholder="State"
+              placeholderTextColor={"#999"}
               value={state}
               onChangeText={setState}
             />
@@ -153,6 +159,7 @@ export default function CreateProfileScreen() {
               style={styles.input}
               placeholder="ZIP Code"
               value={zip}
+              placeholderTextColor={"#999"}
               onChangeText={setZip}
               keyboardType="numeric"
             />
@@ -167,6 +174,7 @@ export default function CreateProfileScreen() {
             <TextInput
               style={styles.input}
               placeholder="Driver's License Number"
+              placeholderTextColor={"#999"}
               value={driversLicense}
               onChangeText={setDriversLicense}
             />
