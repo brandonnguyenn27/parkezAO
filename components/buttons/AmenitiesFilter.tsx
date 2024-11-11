@@ -106,8 +106,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   activeFilterButton: {
-    backgroundColor: "#007AFF",
-    borderColor: "#007AFF",
+    backgroundColor: "#ffce00",
+    borderColor: "#ffce00",
   },
   filterButtonText: {
     color: "#000",
@@ -148,6 +148,6 @@ const styles = StyleSheet.create({
   },
   applyButton: {
     marginTop: 15,
-    backgroundColor: "#007AFF",
+    backgroundColor: "#ffce00",
   },
 });

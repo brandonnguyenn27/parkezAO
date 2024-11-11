@@ -76,7 +76,7 @@ export default function HostListingDetailsScreen() {
         <FontAwesome
           name={index < rating ? "star" : "star-o"}
           size={onRatingChange ? 40 : 20}
-          color="#FFD700"
+          color="#ffce00"
           style={styles.star}
         />
       </TouchableOpacity>
@@ -112,7 +112,7 @@ export default function HostListingDetailsScreen() {
             onPress={() => router.back()}
             style={styles.backButton}
           >
-            <FontAwesome name="arrow-left" size={24} color="#FFD700" />
+            <FontAwesome name="arrow-left" size={24} color="#ffce00" />
           </TouchableOpacity>
           <Text style={styles.title}>Listing Details</Text>
         </View>
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#FFD700",
+    color: "#ffce00",
     marginBottom: 5,
   },
   availability: {
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
   actionButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFD700",
+    backgroundColor: "#ffce00",
     padding: 10,
     borderRadius: 8,
     marginBottom: 10,
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   submitButton: {
-    backgroundColor: "#FFD700",
+    backgroundColor: "#ffce00",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,

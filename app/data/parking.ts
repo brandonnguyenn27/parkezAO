@@ -13,6 +13,7 @@ export interface ParkingSpot {
   reviewsList: Review[];
   startTime: string; // New field
   endTime: string; // New field
+  distance: number; // Mock distance field
 }
 
 interface Review {
@@ -52,6 +53,7 @@ export const parkingSpots: ParkingSpot[] = [
     ],
     startTime: "06:00",
     endTime: "22:00",
+    distance: 0.2, // Mock distance field
   },
   {
     id: 2,
@@ -82,6 +84,7 @@ export const parkingSpots: ParkingSpot[] = [
     ],
     startTime: "07:00",
     endTime: "23:00",
+    distance: 0.7, // Mock distance field
   },
   {
     id: 3,
@@ -112,6 +115,7 @@ export const parkingSpots: ParkingSpot[] = [
     ],
     startTime: "18:00",
     endTime: "08:00",
+    distance: 3.1, // Mock distance field
   },
   {
     id: 4,
@@ -142,6 +146,7 @@ export const parkingSpots: ParkingSpot[] = [
     ],
     startTime: "08:00",
     endTime: "20:00",
+    distance: 0.4, // Mock distance field
   },
   {
     id: 5,
@@ -175,6 +180,7 @@ export const parkingSpots: ParkingSpot[] = [
     ],
     startTime: "17:00",
     endTime: "09:00",
+    distance: 1.2, // Mock distance field
   },
   {
     id: 6,
@@ -216,5 +222,6 @@ export const parkingSpots: ParkingSpot[] = [
     ],
     startTime: "00:00",
     endTime: "23:59",
+    distance: 50.2, // Mock distance field
   },
 ];

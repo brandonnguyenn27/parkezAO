@@ -21,7 +21,8 @@ export default function HostScreen() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [spotDimensions, setSpotDimensions] = useState("");
+  const [spotWidth, setSpotWidth] = useState("");
+  const [spotLength, setSpotLength] = useState("");
   const [hourlyRate, setHourlyRate] = useState("");
   const [availableDates, setAvailableDates] = useState("");
   const [insuranceInfo, setInsuranceInfo] = useState("");
@@ -46,7 +47,7 @@ export default function HostScreen() {
       city,
       state,
       zipCode,
-      spotDimensions,
+      spotDimensions: `${spotWidth}ft x ${spotLength}ft`,
       hourlyRate,
       availableDates,
       insuranceInfo,
@@ -63,18 +64,27 @@ export default function HostScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>Host Your Driveway</Text>
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={styles.backButton}
+          >
+            <FontAwesome name="arrow-left" size={24} color="#ffce00" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Host Your Driveway</Text>
+        </View>
 
         <View style={styles.inputContainer}>
           <FontAwesome
             name="user"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={styles.input}
             placeholder="Full Name"
+            placeholderTextColor="#999"
             value={fullName}
             onChangeText={setFullName}
           />
@@ -84,12 +94,13 @@ export default function HostScreen() {
           <FontAwesome
             name="phone"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={styles.input}
             placeholder="Phone Number"
+            placeholderTextColor="#999"
             value={phoneNumber}
             onChangeText={setPhoneNumber}
             keyboardType="phone-pad"
@@ -100,12 +111,13 @@ export default function HostScreen() {
           <FontAwesome
             name="map-marker"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={styles.input}
             placeholder="Street Address"
+            placeholderTextColor="#999"
             value={address}
             onChangeText={setAddress}
           />
@@ -115,12 +127,13 @@ export default function HostScreen() {
           <FontAwesome
             name="building"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={styles.input}
             placeholder="City"
+            placeholderTextColor="#999"
             value={city}
             onChangeText={setCity}
           />
@@ -130,12 +143,13 @@ export default function HostScreen() {
           <FontAwesome
             name="flag"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={styles.input}
             placeholder="State"
+            placeholderTextColor="#999"
             value={state}
             onChangeText={setState}
           />
@@ -145,12 +159,13 @@ export default function HostScreen() {
           <FontAwesome
             name="map"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={styles.input}
             placeholder="Zip Code"
+            placeholderTextColor="#999"
             value={zipCode}
             onChangeText={setZipCode}
             keyboardType="numeric"
@@ -161,14 +176,25 @@ export default function HostScreen() {
           <FontAwesome
             name="arrows-alt"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
-            style={styles.input}
-            placeholder="Spot Dimensions (e.g., 10ft x 20ft)"
-            value={spotDimensions}
-            onChangeText={setSpotDimensions}
+            style={[styles.input, styles.dimensionInput]}
+            placeholder="Width (ft)"
+            placeholderTextColor="#999"
+            value={spotWidth}
+            onChangeText={setSpotWidth}
+            keyboardType="numeric"
+          />
+          <Text style={styles.dimensionSeparator}>x</Text>
+          <TextInput
+            style={[styles.input, styles.dimensionInput]}
+            placeholder="Length (ft)"
+            placeholderTextColor="#999"
+            value={spotLength}
+            onChangeText={setSpotLength}
+            keyboardType="numeric"
           />
         </View>
 
@@ -176,12 +202,13 @@ export default function HostScreen() {
           <FontAwesome
             name="dollar"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={styles.input}
             placeholder="Hourly Rate"
+            placeholderTextColor="#999"
             value={hourlyRate}
             onChangeText={setHourlyRate}
             keyboardType="numeric"
@@ -192,12 +219,13 @@ export default function HostScreen() {
           <FontAwesome
             name="calendar"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={styles.input}
             placeholder="Available Dates (e.g., Mon-Fri, 9AM-5PM)"
+            placeholderTextColor="#999"
             value={availableDates}
             onChangeText={setAvailableDates}
           />
@@ -207,12 +235,13 @@ export default function HostScreen() {
           <FontAwesome
             name="shield"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={styles.input}
             placeholder="Insurance Information"
+            placeholderTextColor="#999"
             value={insuranceInfo}
             onChangeText={setInsuranceInfo}
           />
@@ -242,12 +271,13 @@ export default function HostScreen() {
           <FontAwesome
             name="file-text"
             size={24}
-            color="#007AFF"
+            color="#ffce00"
             style={styles.icon}
           />
           <TextInput
             style={[styles.input, styles.multilineInput]}
             placeholder="Host Bio / Description of Spot"
+            placeholderTextColor="#999"
             value={hostBio}
             onChangeText={setHostBio}
             multiline
@@ -288,10 +318,18 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 20,
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  backButton: {
+    padding: 10,
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    flex: 1,
     textAlign: "center",
   },
   inputContainer: {
@@ -310,6 +348,14 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     fontSize: 16,
+  },
+  dimensionInput: {
+    flex: 1,
+    textAlign: "center",
+  },
+  dimensionSeparator: {
+    fontSize: 18,
+    marginHorizontal: 5,
   },
   multilineInput: {
     height: 100,

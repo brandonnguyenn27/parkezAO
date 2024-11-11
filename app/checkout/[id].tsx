@@ -163,7 +163,7 @@ export default function CheckoutView() {
             onPress={() => router.back()}
             style={styles.backButton}
           >
-            <Icon name="arrow-back" size={24} color="#FFD700" />
+            <Icon name="arrow-back" size={24} color="#ffce00" />
           </TouchableOpacity>
           <Text style={styles.title}>Checkout</Text>
         </View>
@@ -184,7 +184,7 @@ export default function CheckoutView() {
             <Text style={styles.dateTimeButtonText}>
               {selectedDate.toDateString()}
             </Text>
-            <Icon name="calendar-today" size={24} color="#FFD700" />
+            <Icon name="calendar-today" size={24} color="#ffce00" />
           </TouchableOpacity>
           {showDatePicker && (
             <DateTimePicker
@@ -202,7 +202,7 @@ export default function CheckoutView() {
               <Text style={styles.timeButtonText}>
                 Start: {formatTime(startTime)}
               </Text>
-              <Icon name="access-time" size={24} color="#FFD700" />
+              <Icon name="access-time" size={24} color="#ffce00" />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.timeButton}
@@ -211,7 +211,7 @@ export default function CheckoutView() {
               <Text style={styles.timeButtonText}>
                 End: {formatTime(endTime)}
               </Text>
-              <Icon name="access-time" size={24} color="#FFD700" />
+              <Icon name="access-time" size={24} color="#ffce00" />
             </TouchableOpacity>
           </View>
           {showStartTimePicker && (
@@ -266,7 +266,7 @@ export default function CheckoutView() {
                     : "radio-button-unchecked"
                 }
                 size={24}
-                color="#FFD700"
+                color="#ffce00"
                 style={styles.paymentIcon}
               />
               <Text style={styles.paymentButtonText}>Use Saved Payment</Text>
@@ -302,7 +302,7 @@ export default function CheckoutView() {
                   : "radio-button-unchecked"
               }
               size={24}
-              color="#FFD700"
+              color="#ffce00"
               style={styles.paymentIcon}
             />
             <Text style={styles.paymentButtonText}>Credit Card</Text>
@@ -312,12 +312,14 @@ export default function CheckoutView() {
               <TextInput
                 style={styles.input}
                 placeholder="Cardholder Name"
+                placeholderTextColor="#999"
                 value={cardholderName}
                 onChangeText={setCardholderName}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Card Number"
+                placeholderTextColor="#999"
                 value={cardNumber}
                 onChangeText={setCardNumber}
                 keyboardType="number-pad"
@@ -328,6 +330,7 @@ export default function CheckoutView() {
                   style={[styles.input, styles.halfInput]}
                   placeholder="MM/YY"
                   value={expiryDate}
+                  placeholderTextColor="#999"
                   onChangeText={setExpiryDate}
                   keyboardType="numeric"
                 />
@@ -336,6 +339,7 @@ export default function CheckoutView() {
                   placeholder="CVV"
                   value={cvv}
                   onChangeText={setCvv}
+                  placeholderTextColor="#999"
                   keyboardType="number-pad"
                   maxLength={3}
                 />
@@ -344,12 +348,14 @@ export default function CheckoutView() {
                 style={styles.input}
                 placeholder="Address"
                 value={address}
+                placeholderTextColor="#999"
                 onChangeText={setAddress}
               />
               <View style={styles.row}>
                 <TextInput
                   style={[styles.input, styles.halfInput]}
                   placeholder="City"
+                  placeholderTextColor="#999"
                   value={city}
                   onChangeText={setCity}
                 />
@@ -357,6 +363,7 @@ export default function CheckoutView() {
                   style={[styles.input, styles.halfInput]}
                   placeholder="State"
                   value={state}
+                  placeholderTextColor="#999"
                   onChangeText={setState}
                 />
               </View>
@@ -366,6 +373,7 @@ export default function CheckoutView() {
                 value={zipCode}
                 onChangeText={setZipCode}
                 keyboardType="number-pad"
+                placeholderTextColor="#999"
                 maxLength={5}
               />
               <CheckBox
@@ -463,7 +471,7 @@ const styles = StyleSheet.create({
   spotPrice: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#FFD700",
+    color: "#ffce00",
     marginBottom: 5,
   },
   spotAvailability: {
@@ -521,7 +529,7 @@ const styles = StyleSheet.create({
   durationText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#FFD700",
+    color: "#ffce00",
     marginTop: 10,
   },
   paymentButton: {
@@ -599,7 +607,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   confirmButton: {
-    backgroundColor: "#FFD700",
+    backgroundColor: "#ffce00",
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: "center",

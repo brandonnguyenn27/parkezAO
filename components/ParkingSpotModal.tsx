@@ -10,17 +10,9 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
+import { parkingSpots, ParkingSpot } from "@/app/data/parking";
 
 const { width, height } = Dimensions.get("window");
-
-interface ParkingSpot {
-  id: number;
-  name: string;
-  address: string;
-  price: number;
-  rating: number;
-  reviews: number;
-}
 
 interface ParkingSpotModalProps {
   spot: ParkingSpot | null;
@@ -45,15 +37,15 @@ export default function ParkingSpotModal({
     return (
       <View style={styles.starsContainer}>
         {[...Array(fullStars)].map((_, i) => (
-          <Icon key={`full_${i}`} name="star" size={20} color="#FFD700" />
+          <Icon key={`full_${i}`} name="star" size={20} color="#ffce00" />
         ))}
-        {halfStar && <Icon name="star-half" size={20} color="#FFD700" />}
+        {halfStar && <Icon name="star-half" size={20} color="#ffce00" />}
         {[...Array(emptyStars)].map((_, i) => (
           <Icon
             key={`empty_${i}`}
             name="star-border"
             size={20}
-            color="#FFD700"
+            color="#ffce00"
           />
         ))}
       </View>
@@ -70,12 +62,14 @@ export default function ParkingSpotModal({
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Icon name="close" size={24} color="#FFD700" />
+            <Icon name="close" size={24} color="#ffce00" />
           </TouchableOpacity>
           <Image source={{ uri: spot.images[0] }} style={styles.modalImage} />
           <View style={styles.modalTextContainer}>
             <Text style={styles.modalTitle}>{spot.name}</Text>
-            <Text style={styles.modalAddress}>{spot.address}</Text>
+            <Text style={styles.modalDistance}>
+              {spot.distance.toFixed(1)} mi away
+            </Text>
             <Text style={styles.modalPrice}>${spot.price}/hr</Text>
             <View style={styles.modalRatingContainer}>
               {renderStars(spot.rating)}
@@ -83,6 +77,9 @@ export default function ParkingSpotModal({
                 {spot.rating.toFixed(1)} ({spot.reviews} reviews)
               </Text>
             </View>
+            <Text style={styles.modalAvailability}>
+              Available: {spot.startTime} - {spot.endTime}
+            </Text>
           </View>
           <View style={styles.modalButtonsContainer}>
             <TouchableOpacity
@@ -114,7 +111,6 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: "#fff",
     borderRadius: 20,
-    padding: 20,
     width: width * 0.9,
     maxHeight: height * 0.8,
     shadowColor: "#000",
@@ -125,46 +121,53 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    overflow: "hidden",
   },
   closeButton: {
     position: "absolute",
     top: 10,
     right: 10,
     zIndex: 1,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    borderRadius: 20,
+    padding: 5,
   },
   modalImage: {
     width: "100%",
     height: 200,
-    borderRadius: 10,
-    marginBottom: 15,
   },
   modalTextContainer: {
-    marginBottom: 15,
+    padding: 15,
   },
   modalTitle: {
     fontSize: 22,
     fontWeight: "bold",
     marginBottom: 5,
   },
-  modalAddress: {
+  modalDistance: {
     fontSize: 16,
     color: "#666",
-    marginBottom: 10,
+    marginBottom: 5,
   },
   modalPrice: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#FFD700",
+    color: "#ffce00",
     marginBottom: 5,
   },
   modalRatingContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 5,
   },
   modalRating: {
     fontSize: 16,
     color: "#666",
     marginLeft: 5,
+  },
+  modalAvailability: {
+    fontSize: 14,
+    color: "#666",
   },
   starsContainer: {
     flexDirection: "row",
@@ -172,7 +175,9 @@ const styles = StyleSheet.create({
   modalButtonsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 15,
+    padding: 15,
+    borderTopWidth: 1,
+    borderTopColor: "#e0e0e0",
   },
   button: {
     borderRadius: 10,
@@ -183,21 +188,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   moreDetailsButton: {
-    borderColor: "FFD700",
-    borderWidth: 1,
-    marginRight: 10,
+    backgroundColor: "#ffce00",
   },
   moreDetailsButtonText: {
-    color: "#FFD700",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  bookButton: {
-    backgroundColor: "#FFD700",
-    marginLeft: 10,
-  },
-  bookButtonText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 16,
     fontWeight: "600",
   },

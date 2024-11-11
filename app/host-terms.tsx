@@ -20,7 +20,7 @@ export default function HostTermsScreen() {
           onPress={() => router.back()}
           style={styles.backButton}
         >
-          <FontAwesome name="arrow-left" size={24} color="#007AFF" />
+          <FontAwesome name="arrow-left" size={24} color="#ffce00" />
         </TouchableOpacity>
         <Text style={styles.title}>Host Terms & Conditions</Text>
       </View>
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginRight: 15,
+    color: "ffce00",
   },
   title: {
     fontSize: 20,

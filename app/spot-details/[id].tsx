@@ -44,15 +44,15 @@ export default function SpotDetailsScreen() {
     return (
       <View style={styles.starsContainer}>
         {[...Array(fullStars)].map((_, i) => (
-          <Icon key={`full_${i}`} name="star" size={20} color="#FFD700" />
+          <Icon key={`full_${i}`} name="star" size={20} color="#ffce00" />
         ))}
-        {halfStar && <Icon name="star-half" size={20} color="#FFD700" />}
+        {halfStar && <Icon name="star-half" size={20} color="#ffce00" />}
         {[...Array(emptyStars)].map((_, i) => (
           <Icon
             key={`empty_${i}`}
             name="star-border"
             size={20}
-            color="#FFD700"
+            color="#ffce00"
           />
         ))}
       </View>
@@ -79,7 +79,7 @@ export default function SpotDetailsScreen() {
             onPress={() => router.back()}
             style={styles.backButton}
           >
-            <Icon name="arrow-back" size={24} color="#FFD700" />
+            <Icon name="arrow-back" size={24} color="#ffce00" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Spot Details</Text>
           <TouchableOpacity
@@ -94,7 +94,10 @@ export default function SpotDetailsScreen() {
 
         <View style={styles.content}>
           <Text style={styles.title}>{spot.name}</Text>
-          <Text style={styles.address}>{spot.address}</Text>
+          <Text style={styles.distance}>
+            {spot.distance.toFixed(1)} mi away
+          </Text>
+
           <View style={styles.ratingContainer}>
             {renderStars(spot.rating)}
             <Text style={styles.ratingText}>
@@ -102,17 +105,14 @@ export default function SpotDetailsScreen() {
             </Text>
           </View>
           <Text style={styles.price}>${spot.price}/hr</Text>
-
           <View style={styles.availabilityContainer}>
-            <Icon name="access-time" size={24} color="#FFD700" />
+            <Icon name="access-time" size={24} color="#ffce00" />
             <Text style={styles.availabilityText}>
               Available: {spot.startTime} - {spot.endTime}
             </Text>
           </View>
-
           <Text style={styles.sectionTitle}>Description</Text>
           <Text style={styles.description}>{spot.description}</Text>
-
           <Text style={styles.sectionTitle}>Amenities</Text>
           <View style={styles.amenitiesContainer}>
             {spot.amenities.map((amenity, index) => (
@@ -122,7 +122,6 @@ export default function SpotDetailsScreen() {
               </View>
             ))}
           </View>
-
           <Text style={styles.sectionTitle}>Reviews</Text>
           {spot.reviewsList.map((review) => (
             <View key={review.id} style={styles.reviewItem}>
@@ -133,7 +132,6 @@ export default function SpotDetailsScreen() {
               <Text style={styles.reviewComment}>{review.comment}</Text>
             </View>
           ))}
-
           <Button
             title="Book Now"
             buttonStyle={styles.bookButton}
@@ -174,7 +172,7 @@ export default function SpotDetailsScreen() {
                 }
                 containerStyle={styles.checkboxContainer}
                 textStyle={styles.checkboxText}
-                checkedColor="#FFD700"
+                checkedColor="#ffce00"
                 uncheckedColor="#D1D1D1"
                 checkedIcon="check-square"
                 uncheckedIcon="square-o"
@@ -190,7 +188,7 @@ export default function SpotDetailsScreen() {
                 }
                 containerStyle={styles.checkboxContainer}
                 textStyle={styles.checkboxText}
-                checkedColor="#FFD700"
+                checkedColor="#ffce00"
                 uncheckedColor="#D1D1D1"
                 checkedIcon="check-square"
                 uncheckedIcon="square-o"
@@ -206,7 +204,7 @@ export default function SpotDetailsScreen() {
                 }
                 containerStyle={styles.checkboxContainer}
                 textStyle={styles.checkboxText}
-                checkedColor="#FFD700"
+                checkedColor="#ffce00"
                 uncheckedColor="#D1D1D1"
                 checkedIcon="check-square"
                 uncheckedIcon="square-o"
@@ -219,7 +217,7 @@ export default function SpotDetailsScreen() {
                 }
                 containerStyle={styles.checkboxContainer}
                 textStyle={styles.checkboxText}
-                checkedColor="#FFD700"
+                checkedColor="#ffce00"
                 uncheckedColor="#D1D1D1"
                 checkedIcon="check-square"
                 uncheckedIcon="square-o"
@@ -294,7 +292,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
   },
-  address: {
+  distance: {
     fontSize: 16,
     color: "#666",
     marginBottom: 10,
@@ -315,7 +313,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#FFD700",
+    color: "#ffce00",
     marginBottom: 10,
   },
   availabilityContainer: {
@@ -377,7 +375,7 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   bookButton: {
-    backgroundColor: "#FFD700",
+    backgroundColor: "#ffce00",
     borderRadius: 10,
     paddingVertical: 15,
     marginTop: 20,
@@ -446,18 +444,18 @@ const styles = StyleSheet.create({
   cancelButton: {
     height: 48,
     borderRadius: 12,
-    borderColor: "#FFD700",
+    borderColor: "#ffce00",
     borderWidth: 1,
     backgroundColor: "transparent",
   },
   submitButton: {
     height: 48,
     borderRadius: 12,
-    backgroundColor: "#FFD700",
+    backgroundColor: "#ffce00",
     borderWidth: 0,
   },
   cancelButtonText: {
-    color: "#FFD700",
+    color: "#ffce00",
     fontSize: 16,
     fontWeight: "500",
   },

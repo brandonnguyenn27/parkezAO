@@ -27,8 +27,8 @@ export default function OAuthSignUpScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Image
-            source={{ uri: "https://i.ibb.co/cJwPYRD/IMG-5252.png" }}
-            style={styles.logo}
+            source={{ uri: "https://i.ibb.co/ZYMJmq3/IMG-2235.png" }}
+            style={[styles.logo, { width: 200, height: 200 }]}
             accessibilityLabel="logo"
           />
           <Text style={styles.title}>ParkEZ</Text>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "#FFD700",
+    color: "#ffce00",
   },
   subtitle: {
     fontSize: 16,
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   signUpButton: {
-    backgroundColor: "#FFD700",
+    backgroundColor: "#ffce00",
     borderRadius: 8,
     padding: 14,
   },
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   loginButton: {
-    color: "#FFD700",
+    color: "#ffce00",
     fontSize: 16,
     fontWeight: "bold",
   },

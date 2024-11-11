@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   activeFilterButton: {
-    backgroundColor: "#007AFF",
-    borderColor: "#007AFF",
+    backgroundColor: "#ffce00",
+    borderColor: "#ffce00",
   },
   filterButtonText: {
     color: "#000",
@@ -140,10 +140,10 @@ const styles = StyleSheet.create({
   sliderThumb: {
     height: 20,
     width: 20,
-    backgroundColor: "#007AFF",
+    backgroundColor: "#ffce00",
   },
   applyButton: {
     marginTop: 15,
-    backgroundColor: "#007AFF",
+    backgroundColor: "#ffce00",
   },
 });

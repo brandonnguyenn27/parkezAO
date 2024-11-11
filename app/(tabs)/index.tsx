@@ -25,12 +25,6 @@ const { height, width } = Dimensions.get("window");
 
 type SortOption = "price_asc" | "price_desc" | "rating_desc" | "distance_asc";
 
-// Add fake distance to parking spots
-const spotsWithDistance = parkingSpots.map((spot) => ({
-  ...spot,
-  distance: Math.random() * 5, // Random distance between 0 and 5 km
-}));
-
 export default function HomeScreen() {
   const [selectedSpot, setSelectedSpot] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,7 +36,7 @@ export default function HomeScreen() {
     longitudeDelta: 0.01,
   });
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredSpots, setFilteredSpots] = useState(spotsWithDistance);
+  const [filteredSpots, setFilteredSpots] = useState(parkingSpots);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100);
   const [minRating, setMinRating] = useState(0);
@@ -56,7 +50,7 @@ export default function HomeScreen() {
   }, [minPrice, maxPrice, minRating, selectedAmenities, searchQuery, sortBy]);
 
   const applyFilters = () => {
-    let filtered = spotsWithDistance.filter((spot) => {
+    let filtered = parkingSpots.filter((spot) => {
       const matchesPrice = spot.price >= minPrice && spot.price <= maxPrice;
       const matchesRating = spot.rating >= minRating;
       const matchesAmenities = selectedAmenities.every((amenity) =>
@@ -154,6 +148,7 @@ export default function HomeScreen() {
           <TextInput
             style={styles.searchInput}
             placeholder="Search for parking spots"
+            placeholderTextColor="#999"
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
@@ -216,7 +211,7 @@ export default function HomeScreen() {
                   <Icon
                     name="sort"
                     size={20}
-                    color="#FFD700"
+                    color="#ffce00"
                     style={{ marginRight: 5 }}
                   />
                 }
@@ -238,8 +233,7 @@ export default function HomeScreen() {
                   <Text style={styles.parkingSpotPrice}>${spot.price}/hr</Text>
                   <Text style={styles.parkingSpotLocation}>{spot.name}</Text>
                   <Text style={styles.parkingSpotRating}>
-                    <FontAwesome name="star" size={16} color="#FFD700" />{" "}
-                    {/* Star icon in yellow */}
+                    <FontAwesome name="star" size={16} color="#ffce00" />{" "}
                     {spot.rating} ({spot.reviews})
                   </Text>
                   <Text style={styles.parkingSpotDistance}>
@@ -271,7 +265,7 @@ export default function HomeScreen() {
               <Icon
                 name="place"
                 size={20}
-                color="#FFD700"
+                color="#ffce00"
                 style={styles.sortOptionIcon}
               />
               <Text style={styles.sortOptionText}>Nearest</Text>
@@ -283,7 +277,7 @@ export default function HomeScreen() {
               <Icon
                 name="arrow-upward"
                 size={20}
-                color="#FFD700"
+                color="#ffce00"
                 style={styles.sortOptionIcon}
               />
               <Text style={styles.sortOptionText}>Price: Low to High</Text>
@@ -295,7 +289,7 @@ export default function HomeScreen() {
               <Icon
                 name="arrow-downward"
                 size={20}
-                color="#FFD700"
+                color="#ffce00"
                 style={styles.sortOptionIcon}
               />
               <Text style={styles.sortOptionText}>Price: High to Low</Text>
@@ -307,7 +301,7 @@ export default function HomeScreen() {
               <Icon
                 name="star"
                 size={20}
-                color="#FFD700"
+                color="#ffce00"
                 style={styles.sortOptionIcon}
               />
               <Text style={styles.sortOptionText}>Highest Rated</Text>

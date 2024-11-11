@@ -19,7 +19,7 @@ const mockUser = {
   name: "John Doe",
   email: "john.doe@example.com",
   phone: "+1 (555) 123-4567",
-  profilePicture: "https://via.placeholder.com/150",
+  profilePicture: "https://i.ibb.co/5BkYjh2/DSC-0837.jpg",
 };
 
 export default function ProfileScreen() {
@@ -33,7 +33,7 @@ export default function ProfileScreen() {
         <FontAwesome
           name={icon}
           size={24}
-          color="FFD700"
+          color="ffce00"
           style={styles.settingIcon}
         />
         <Text style={styles.settingTitle}>{title}</Text>
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FFD700",
+    backgroundColor: "#ffce00",
     margin: 20,
     padding: 15,
     borderRadius: 10,
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     margin: 20,
-    backgroundColor: "#FFD700",
+    backgroundColor: "#ffce00",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
