@@ -31,6 +31,8 @@ export default function HostScreen() {
   const [wheelchairAccessible, setWheelchairAccessible] = useState(false);
   const [hostBio, setHostBio] = useState("");
   const [proofOfOwnership, setProofOfOwnership] = useState(null);
+  const [instantBookEnabled, setInstantBookEnabled] = useState(false);
+  const [minUserRating, setMinUserRating] = useState("");
 
   const handleDocumentPick = () => {
     // Simulating document selection
@@ -56,6 +58,8 @@ export default function HostScreen() {
       wheelchairAccessible,
       hostBio,
       proofOfOwnership,
+      instantBookEnabled,
+      minUserRating: instantBookEnabled ? minUserRating : null,
     });
     // After submission, navigate back to the profile or a confirmation page
     router.push("/");
@@ -69,7 +73,7 @@ export default function HostScreen() {
             onPress={() => router.back()}
             style={styles.backButton}
           >
-            <FontAwesome name="arrow-left" size={24} color="#ffce00" />
+            <FontAwesome name="arrow-left" size={24} color="#FFD700" />
           </TouchableOpacity>
           <Text style={styles.title}>Host Your Driveway</Text>
         </View>
@@ -78,7 +82,7 @@ export default function HostScreen() {
           <FontAwesome
             name="user"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -94,7 +98,7 @@ export default function HostScreen() {
           <FontAwesome
             name="phone"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -111,7 +115,7 @@ export default function HostScreen() {
           <FontAwesome
             name="map-marker"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -127,7 +131,7 @@ export default function HostScreen() {
           <FontAwesome
             name="building"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -143,7 +147,7 @@ export default function HostScreen() {
           <FontAwesome
             name="flag"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -159,7 +163,7 @@ export default function HostScreen() {
           <FontAwesome
             name="map"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -176,7 +180,7 @@ export default function HostScreen() {
           <FontAwesome
             name="arrows-alt"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -202,7 +206,7 @@ export default function HostScreen() {
           <FontAwesome
             name="dollar"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -219,7 +223,7 @@ export default function HostScreen() {
           <FontAwesome
             name="calendar"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -235,7 +239,7 @@ export default function HostScreen() {
           <FontAwesome
             name="shield"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -271,7 +275,7 @@ export default function HostScreen() {
           <FontAwesome
             name="file-text"
             size={24}
-            color="#ffce00"
+            color="#FFD700"
             style={styles.icon}
           />
           <TextInput
@@ -301,6 +305,35 @@ export default function HostScreen() {
             {proofOfOwnership ? "File Selected" : "Upload Proof of Ownership"}
           </Text>
         </TouchableOpacity>
+
+        <Text style={styles.sectionTitle}>Booking Options</Text>
+
+        <View style={styles.switchContainer}>
+          <Text style={styles.switchLabel}>Enable Instant Book</Text>
+          <Switch
+            value={instantBookEnabled}
+            onValueChange={setInstantBookEnabled}
+          />
+        </View>
+
+        {instantBookEnabled && (
+          <View style={styles.inputContainer}>
+            <FontAwesome
+              name="star"
+              size={24}
+              color="#ffce00"
+              style={styles.icon}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Minimum User Rating (1-5)"
+              placeholderTextColor="#999"
+              value={minUserRating}
+              onChangeText={setMinUserRating}
+              keyboardType="numeric"
+            />
+          </View>
+        )}
 
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Submit Driveway</Text>
@@ -378,7 +411,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   uploadButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -395,7 +428,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   submitButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#FFD700",
     borderRadius: 8,
     paddingVertical: 15,
     marginTop: 20,
@@ -404,6 +437,6 @@ const styles = StyleSheet.create({
   submitButtonText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#000",
   },
 });

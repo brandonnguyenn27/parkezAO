@@ -21,12 +21,13 @@ import AmenitiesFilter from "@/components/buttons/AmenitiesFilter";
 import { parkingSpots } from "../data/parking";
 import FontAwesome from "@expo/vector-icons/build/FontAwesome";
 import MapComponent from "@/components/MapComponent";
-
+import { LogBox } from "react-native";
 const { height, width } = Dimensions.get("window");
 
 type SortOption = "price_asc" | "price_desc" | "rating_desc" | "distance_asc";
 
 export default function HomeScreen() {
+  LogBox.ignoreAllLogs();
   const [selectedSpot, setSelectedSpot] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(14);

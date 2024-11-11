@@ -33,13 +33,14 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
+        <Stack.Screen name="landing" options={{ headerShown: false }} />
+
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="oauthsignup" options={{ headerShown: false }} />
         <Stack.Screen
           name="termsandservices"
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="landing" options={{ headerShown: false }} />
         <Stack.Screen
           name="hostlistingdetails/[id]"
           options={{ headerShown: false }}

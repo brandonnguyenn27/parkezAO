@@ -44,8 +44,6 @@ export default function CheckoutView() {
     { id: 2, cardNumber: "**** **** **** 5678", cardholderName: "Jane Smith" },
   ]);
 
-  const [useEvCharging, setUseEvCharging] = useState(false);
-
   useEffect(() => {
     if (spot) {
       const [startHour, startMinute] = spot.startTime.split(":").map(Number);
@@ -105,7 +103,6 @@ export default function CheckoutView() {
         startTime: startTime.toTimeString().split(" ")[0],
         endTime: endTime.toTimeString().split(" ")[0],
         totalPrice: totalPrice,
-        evCharging: useEvCharging,
       },
     });
   };
@@ -140,9 +137,7 @@ export default function CheckoutView() {
 
   const calculateTotalPrice = (duration) => {
     let basePrice = spot.price * duration;
-    if (useEvCharging) {
-      basePrice *= 1.25;
-    }
+
     return (basePrice + 2).toFixed(2);
   };
 
@@ -258,17 +253,7 @@ export default function CheckoutView() {
             Duration: {calculateDuration()} hours
           </Text>
         </View>
-        {spot.amenities.includes("EV Charging") && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>EV Charging</Text>
-            <CheckBox
-              title="Opt in for EV charging (25% additional fee)"
-              checked={useEvCharging}
-              onPress={() => setUseEvCharging(!useEvCharging)}
-              containerStyle={styles.checkboxContainer}
-            />
-          </View>
-        )}
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Payment Method</Text>
           {savedPayments.length > 0 && (
@@ -398,17 +383,7 @@ export default function CheckoutView() {
               ${(spot.price * parseFloat(calculateDuration())).toFixed(2)}
             </Text>
           </View>
-          {useEvCharging && (
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryText}>EV Charging Fee (25%)</Text>
-              <Text style={styles.summaryPrice}>
-                $
-                {(spot.price * parseFloat(calculateDuration()) * 0.25).toFixed(
-                  2
-                )}
-              </Text>
-            </View>
-          )}
+
           <View style={styles.summaryRow}>
             <Text style={styles.summaryText}>Service Fee</Text>
             <Text style={styles.summaryPrice}>$2.00</Text>

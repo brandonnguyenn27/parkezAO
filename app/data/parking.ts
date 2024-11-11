@@ -222,6 +222,6 @@ export const parkingSpots: ParkingSpot[] = [
     ],
     startTime: "00:00", // Updated to military time format
     endTime: "23:59", // Updated to military time format
-    distance: Math.random() * 5, // Mock distance field
+    distance: 50.2, // Mock distance field
   },
 ];
