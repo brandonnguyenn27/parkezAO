@@ -33,7 +33,7 @@ export default function ProfileScreen() {
         <FontAwesome
           name={icon}
           size={24}
-          color="#007AFF"
+          color="FFD700"
           style={styles.settingIcon}
         />
         <Text style={styles.settingTitle}>{title}</Text>
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#FFD700",
     margin: 20,
     padding: 15,
     borderRadius: 10,
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     margin: 20,
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

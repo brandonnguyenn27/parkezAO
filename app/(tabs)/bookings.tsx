@@ -69,7 +69,7 @@ export default function BookingsScreen() {
           {item.date} | {item.time}
         </Text>
       </View>
-      <FontAwesome name="chevron-right" size={20} color="#007AFF" />
+      <FontAwesome name="chevron-right" size={20} color="#FFD700" />
     </TouchableOpacity>
   );
 
@@ -161,7 +161,7 @@ export default function BookingsScreen() {
               style={styles.closeButton}
               onPress={() => setModalVisible(false)}
             >
-              <FontAwesome name="times" size={24} color="#007AFF" />
+              <FontAwesome name="times" size={24} color="#FFD700" />
             </TouchableOpacity>
 
             {selectedBooking && (
@@ -327,13 +327,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   submitButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
     borderRadius: 10,
     padding: 15,
     alignItems: "center",
   },
   submitButtonText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 18,
     fontWeight: "bold",
   },
@@ -353,10 +353,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF3B30",
   },
   changeButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
   },
   actionButtonText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 16,
     fontWeight: "bold",
   },

@@ -27,11 +27,11 @@ export default function OAuthSignUpScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Image
-            source={{ uri: "https://via.placeholder.com/150" }}
+            source={{ uri: "https://i.ibb.co/cJwPYRD/IMG-5252.png" }}
             style={styles.logo}
-            accessibilityLabel="AO Parking logo"
+            accessibilityLabel="logo"
           />
-          <Text style={styles.title}>Parkable</Text>
+          <Text style={styles.title}>ParkEZ</Text>
           <Text style={styles.subtitle}>Sign up to start parking smarter</Text>
         </View>
 
@@ -79,7 +79,7 @@ export default function OAuthSignUpScreen() {
           accessibilityLabel="Sign up with Google"
         >
           <Image
-            source={{ uri: "https://via.placeholder.com/20" }} // Replace with actual Google logo
+            source={{ uri: "https://i.ibb.co/DtN3Fd5/Google-G-logo-svg.png" }} // Replace with actual Google logo
             style={styles.googleIcon}
           />
           <Text style={styles.googleButtonText}>Sign up with Google</Text>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "#007AFF",
+    color: "#FFD700",
   },
   subtitle: {
     fontSize: 16,
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   signUpButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
     borderRadius: 8,
     padding: 14,
   },
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   loginButton: {
-    color: "#007AFF",
+    color: "#FFD700",
     fontSize: 16,
     fontWeight: "bold",
   },

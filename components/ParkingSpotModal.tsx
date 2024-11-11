@@ -70,12 +70,9 @@ export default function ParkingSpotModal({
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Icon name="close" size={24} color="#007AFF" />
+            <Icon name="close" size={24} color="#FFD700" />
           </TouchableOpacity>
-          <Image
-            source={{ uri: "https://via.placeholder.com/300x200" }}
-            style={styles.modalImage}
-          />
+          <Image source={{ uri: spot.images[0] }} style={styles.modalImage} />
           <View style={styles.modalTextContainer}>
             <Text style={styles.modalTitle}>{spot.name}</Text>
             <Text style={styles.modalAddress}>{spot.address}</Text>
@@ -157,7 +154,7 @@ const styles = StyleSheet.create({
   modalPrice: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#007AFF",
+    color: "#FFD700",
     marginBottom: 5,
   },
   modalRatingContainer: {
@@ -186,17 +183,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   moreDetailsButton: {
-    borderColor: "#007AFF",
+    borderColor: "FFD700",
     borderWidth: 1,
     marginRight: 10,
   },
   moreDetailsButtonText: {
-    color: "#007AFF",
+    color: "#FFD700",
     fontSize: 16,
     fontWeight: "600",
   },
   bookButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
     marginLeft: 10,
   },
   bookButtonText: {

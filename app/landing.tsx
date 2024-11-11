@@ -11,11 +11,11 @@ export default function LandingScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Image
-          source={{ uri: "https://via.placeholder.com/200" }}
+          source={{ uri: "https://i.ibb.co/cJwPYRD/IMG-5252.png" }}
           style={styles.logo}
           accessibilityLabel="Parkable"
         />
-        <Text style={styles.title}>Welcome to Parkable</Text>
+        <Text style={styles.title}>Welcome to ParkEZ</Text>
         <Text style={styles.subtitle}>
           Find and book parking spots with ease
         </Text>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   signUpButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
     borderRadius: 8,
     paddingHorizontal: 30,
     paddingVertical: 15,
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
+
     fontWeight: "bold",
   },
   loginText: {

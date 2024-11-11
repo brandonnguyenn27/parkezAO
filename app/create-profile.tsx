@@ -50,7 +50,7 @@ export default function CreateProfileScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <FontAwesome name="user-circle" size={80} color="#007AFF" />
+          <FontAwesome name="user-circle" size={80} color="#D3D3D3" />
           <Text style={styles.title}>Create Your Profile</Text>
           <Text style={styles.subtitle}>
             Please provide your information below
@@ -62,7 +62,7 @@ export default function CreateProfileScreen() {
             <FontAwesome
               name="user"
               size={20}
-              color="#007AFF"
+              color="#000"
               style={styles.inputIcon}
             />
             <TextInput
@@ -76,7 +76,7 @@ export default function CreateProfileScreen() {
             <FontAwesome
               name="user"
               size={20}
-              color="#007AFF"
+              color="#000"
               style={styles.inputIcon}
             />
             <TextInput
@@ -90,7 +90,7 @@ export default function CreateProfileScreen() {
             <FontAwesome
               name="user"
               size={20}
-              color="#007AFF"
+              color="#000"
               style={styles.inputIcon}
             />
             <TextInput
@@ -104,7 +104,7 @@ export default function CreateProfileScreen() {
             <FontAwesome
               name="home"
               size={20}
-              color="#007AFF"
+              color="#000"
               style={styles.inputIcon}
             />
             <TextInput
@@ -118,7 +118,7 @@ export default function CreateProfileScreen() {
             <FontAwesome
               name="building"
               size={20}
-              color="#007AFF"
+              color="#000"
               style={styles.inputIcon}
             />
             <TextInput
@@ -132,7 +132,7 @@ export default function CreateProfileScreen() {
             <FontAwesome
               name="map"
               size={20}
-              color="#007AFF"
+              color="#000"
               style={styles.inputIcon}
             />
             <TextInput
@@ -146,7 +146,7 @@ export default function CreateProfileScreen() {
             <FontAwesome
               name="map-marker"
               size={20}
-              color="#007AFF"
+              color="#000"
               style={styles.inputIcon}
             />
             <TextInput
@@ -161,7 +161,7 @@ export default function CreateProfileScreen() {
             <FontAwesome
               name="id-card"
               size={20}
-              color="#007AFF"
+              color="#000"
               style={styles.inputIcon}
             />
             <TextInput
@@ -180,7 +180,7 @@ export default function CreateProfileScreen() {
           <FontAwesome
             name={idImageUploaded ? "check-circle" : "camera"}
             size={24}
-            color="#007AFF"
+            color="#000"
             style={styles.uploadIcon}
           />
           <Text style={styles.imageUploadButtonText}>
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   },
   imageUploadButtonText: {
     fontSize: 16,
-    color: "#007AFF",
+    color: "#000",
   },
   uploadedImagePlaceholder: {
     width: "100%",

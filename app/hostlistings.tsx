@@ -49,7 +49,7 @@ export default function HostListingsScreen() {
           onPress={() => router.back()}
           style={styles.backButton}
         >
-          <FontAwesome name="arrow-left" size={24} color="#007AFF" />
+          <FontAwesome name="arrow-left" size={24} color="#FFD700" />
         </TouchableOpacity>
         <Text style={styles.title}>Your Listings</Text>
       </View>
@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e0e0e0",
   },
   backButton: {
+    color: "FFD700",
     marginRight: 15,
   },
   title: {
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
   listingRate: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#007AFF",
+    color: "#FFD700",
     marginTop: 5,
   },
   listingAvailability: {

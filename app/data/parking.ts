@@ -27,7 +27,7 @@ export const parkingSpots: ParkingSpot[] = [
     id: 1,
     name: "Downtown Parking",
     address: "123 Main St, San Jose, CA 95113",
-    price: 5,
+    price: 2.5,
     latitude: 37.3382,
     longitude: -121.8863,
     rating: 4.5,
@@ -35,11 +35,7 @@ export const parkingSpots: ParkingSpot[] = [
     amenities: ["Security", "EV Charging", "Covered"],
     description:
       "Convenient downtown parking with 24/7 security and EV charging stations.",
-    images: [
-      "https://example.com/downtown_parking_1.jpg",
-      "https://example.com/downtown_parking_2.jpg",
-      "https://example.com/downtown_parking_3.jpg",
-    ],
+    images: ["https://i.ibb.co/tBcM0B2/PNG-image.jpg"],
     reviewsList: [
       {
         id: "1",
@@ -59,9 +55,9 @@ export const parkingSpots: ParkingSpot[] = [
   },
   {
     id: 2,
-    name: "City Center Garage",
+    name: "Nice Parking Spot",
     address: "456 1st St, San Jose, CA 95110",
-    price: 4,
+    price: 1.25,
     latitude: 37.3318,
     longitude: -121.8916,
     rating: 4.0,
@@ -69,10 +65,7 @@ export const parkingSpots: ParkingSpot[] = [
     amenities: ["Security", "Wheelchair Accessible", "Valet"],
     description:
       "Centrally located garage with valet service and wheelchair accessibility.",
-    images: [
-      "https://example.com/city_center_garage_1.jpg",
-      "https://example.com/city_center_garage_2.jpg",
-    ],
+    images: ["https://i.ibb.co/kKJG2yV/PNG-image.jpg"],
     reviewsList: [
       {
         id: "1",
@@ -92,19 +85,16 @@ export const parkingSpots: ParkingSpot[] = [
   },
   {
     id: 3,
-    name: "Residential Parking",
+    name: "Big Driveway Parking",
     address: "789 2nd St, San Jose, CA 95112",
     price: 3,
-    latitude: 37.3366,
-    longitude: -121.8797,
+    latitude: 37.3333, // Updated latitude
+    longitude: -121.8847, // Updated longitude
     rating: 3.5,
     reviews: 62,
     amenities: ["EV Charging", "Wheelchair Accessible"],
     description: "Affordable residential parking with EV charging stations.",
-    images: [
-      "https://example.com/residential_parking_1.jpg",
-      "https://example.com/residential_parking_2.jpg",
-    ],
+    images: ["https://i.ibb.co/bHH8jLy/PNG-image.jpg"],
     reviewsList: [
       {
         id: "1",
@@ -125,20 +115,16 @@ export const parkingSpots: ParkingSpot[] = [
   },
   {
     id: 4,
-    name: "Street Parking",
+    name: "Residential Parking",
     address: "321 3rd St, San Jose, CA 95113",
-    price: 6,
+    price: 2,
     latitude: 37.3299,
     longitude: -121.8839,
     rating: 4.2,
     reviews: 95,
     amenities: ["Security", "Covered", "Valet"],
     description: "Premium street parking with valet service and covered spots.",
-    images: [
-      "https://example.com/street_parking_1.jpg",
-      "https://example.com/street_parking_2.jpg",
-      "https://example.com/street_parking_3.jpg",
-    ],
+    images: ["https://i.ibb.co/yP1pRRJ/PNG-image.jpg"],
     reviewsList: [
       {
         id: "1",
@@ -170,8 +156,7 @@ export const parkingSpots: ParkingSpot[] = [
     description:
       "Budget-friendly residential parking with covered spots and easy accessibility.",
     images: [
-      "https://example.com/residential_parking_2_1.jpg",
-      "https://example.com/residential_parking_2_2.jpg",
+      "https://i.ibb.co/DRZ7zRv/148e8d62-058c-41a9-bc55-0a2568e4d28d.jpg",
     ],
     reviewsList: [
       {
@@ -193,9 +178,9 @@ export const parkingSpots: ParkingSpot[] = [
   },
   {
     id: 6,
-    name: "Union Square Garage",
+    name: "Residential Parking",
     address: "333 Post St, San Francisco, CA 94108",
-    price: 8,
+    price: 5,
     latitude: 37.7879,
     longitude: -122.4075,
     rating: 4.3,
@@ -204,7 +189,7 @@ export const parkingSpots: ParkingSpot[] = [
     description:
       "Prime parking location in the heart of San Francisco's shopping district.",
     images: [
-      "./assets/images/driveways/80lpjnvpct7d1.jpeg",
+      "https://i.ibb.co/khN3k2L/80lpjnvpct7d1.jpg",
       "https://example.com/union_square_garage_2.jpg",
       "https://example.com/union_square_garage_3.jpg",
     ],

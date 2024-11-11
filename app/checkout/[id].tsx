@@ -163,7 +163,7 @@ export default function CheckoutView() {
             onPress={() => router.back()}
             style={styles.backButton}
           >
-            <Icon name="arrow-back" size={24} color="#007AFF" />
+            <Icon name="arrow-back" size={24} color="#FFD700" />
           </TouchableOpacity>
           <Text style={styles.title}>Checkout</Text>
         </View>
@@ -184,7 +184,7 @@ export default function CheckoutView() {
             <Text style={styles.dateTimeButtonText}>
               {selectedDate.toDateString()}
             </Text>
-            <Icon name="calendar-today" size={24} color="#007AFF" />
+            <Icon name="calendar-today" size={24} color="#FFD700" />
           </TouchableOpacity>
           {showDatePicker && (
             <DateTimePicker
@@ -202,7 +202,7 @@ export default function CheckoutView() {
               <Text style={styles.timeButtonText}>
                 Start: {formatTime(startTime)}
               </Text>
-              <Icon name="access-time" size={24} color="#007AFF" />
+              <Icon name="access-time" size={24} color="#FFD700" />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.timeButton}
@@ -211,7 +211,7 @@ export default function CheckoutView() {
               <Text style={styles.timeButtonText}>
                 End: {formatTime(endTime)}
               </Text>
-              <Icon name="access-time" size={24} color="#007AFF" />
+              <Icon name="access-time" size={24} color="#FFD700" />
             </TouchableOpacity>
           </View>
           {showStartTimePicker && (
@@ -266,7 +266,7 @@ export default function CheckoutView() {
                     : "radio-button-unchecked"
                 }
                 size={24}
-                color="#007AFF"
+                color="#FFD700"
                 style={styles.paymentIcon}
               />
               <Text style={styles.paymentButtonText}>Use Saved Payment</Text>
@@ -302,7 +302,7 @@ export default function CheckoutView() {
                   : "radio-button-unchecked"
               }
               size={24}
-              color="#007AFF"
+              color="#FFD700"
               style={styles.paymentIcon}
             />
             <Text style={styles.paymentButtonText}>Credit Card</Text>
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
   spotPrice: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#007AFF",
+    color: "#FFD700",
     marginBottom: 5,
   },
   spotAvailability: {
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
   durationText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#007AFF",
+    color: "#FFD700",
     marginTop: 10,
   },
   paymentButton: {
@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#eee",
   },
   paymentButtonText: {
-    color: "#007AFF",
+    color: "#000",
     fontSize: 16,
   },
   paymentIcon: {
@@ -599,14 +599,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   confirmButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: "center",
     marginBottom: 20,
   },
   confirmButtonText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 18,
     fontWeight: "bold",
   },

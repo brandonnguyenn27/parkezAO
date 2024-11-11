@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   TextInput,
+  Image,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,6 +19,7 @@ import PriceFilter from "@/components/buttons/PriceFilter";
 import RatingFilter from "@/components/buttons/RatingFilter";
 import AmenitiesFilter from "@/components/buttons/AmenitiesFilter";
 import { parkingSpots } from "../data/parking";
+import FontAwesome from "@expo/vector-icons/build/FontAwesome";
 
 const { height, width } = Dimensions.get("window");
 
@@ -214,10 +216,11 @@ export default function HomeScreen() {
                   <Icon
                     name="sort"
                     size={20}
-                    color="#007AFF"
+                    color="#FFD700"
                     style={{ marginRight: 5 }}
                   />
                 }
+                titleStyle={{ color: "#000" }}
                 onPress={toggleSortOverlay}
               />
             </View>
@@ -228,14 +231,19 @@ export default function HomeScreen() {
                   style={styles.parkingSpotCard}
                   onPress={() => openSpotDetails(spot)}
                 >
-                  <View style={styles.parkingSpotImagePlaceholder} />
+                  <Image
+                    source={{ uri: spot.images[0] }}
+                    style={styles.parkingSpotImagePlaceholder}
+                  />
                   <Text style={styles.parkingSpotPrice}>${spot.price}/hr</Text>
                   <Text style={styles.parkingSpotLocation}>{spot.name}</Text>
                   <Text style={styles.parkingSpotRating}>
-                    ★ {spot.rating} ({spot.reviews})
+                    <FontAwesome name="star" size={16} color="#FFD700" />{" "}
+                    {/* Star icon in yellow */}
+                    {spot.rating} ({spot.reviews})
                   </Text>
                   <Text style={styles.parkingSpotDistance}>
-                    {spot.distance.toFixed(1)} km away
+                    {spot.distance.toFixed(1)} mi. away
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -263,7 +271,7 @@ export default function HomeScreen() {
               <Icon
                 name="place"
                 size={20}
-                color="#007AFF"
+                color="#FFD700"
                 style={styles.sortOptionIcon}
               />
               <Text style={styles.sortOptionText}>Nearest</Text>
@@ -275,7 +283,7 @@ export default function HomeScreen() {
               <Icon
                 name="arrow-upward"
                 size={20}
-                color="#007AFF"
+                color="#FFD700"
                 style={styles.sortOptionIcon}
               />
               <Text style={styles.sortOptionText}>Price: Low to High</Text>
@@ -287,7 +295,7 @@ export default function HomeScreen() {
               <Icon
                 name="arrow-downward"
                 size={20}
-                color="#007AFF"
+                color="#FFD700"
                 style={styles.sortOptionIcon}
               />
               <Text style={styles.sortOptionText}>Price: High to Low</Text>
@@ -299,7 +307,7 @@ export default function HomeScreen() {
               <Icon
                 name="star"
                 size={20}
-                color="#007AFF"
+                color="#FFD700"
                 style={styles.sortOptionIcon}
               />
               <Text style={styles.sortOptionText}>Highest Rated</Text>

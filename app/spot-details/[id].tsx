@@ -79,7 +79,7 @@ export default function SpotDetailsScreen() {
             onPress={() => router.back()}
             style={styles.backButton}
           >
-            <Icon name="arrow-back" size={24} color="#007AFF" />
+            <Icon name="arrow-back" size={24} color="#FFD700" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Spot Details</Text>
           <TouchableOpacity
@@ -90,11 +90,7 @@ export default function SpotDetailsScreen() {
           </TouchableOpacity>
         </View>
 
-        <ScrollView horizontal pagingEnabled style={styles.imageContainer}>
-          {spot.images.map((image, index) => (
-            <Image key={index} source={{ uri: image }} style={styles.image} />
-          ))}
-        </ScrollView>
+        <Image source={{ uri: spot.images[0] }} style={styles.image} />
 
         <View style={styles.content}>
           <Text style={styles.title}>{spot.name}</Text>
@@ -108,7 +104,7 @@ export default function SpotDetailsScreen() {
           <Text style={styles.price}>${spot.price}/hr</Text>
 
           <View style={styles.availabilityContainer}>
-            <Icon name="access-time" size={24} color="#007AFF" />
+            <Icon name="access-time" size={24} color="#FFD700" />
             <Text style={styles.availabilityText}>
               Available: {spot.startTime} - {spot.endTime}
             </Text>
@@ -178,7 +174,7 @@ export default function SpotDetailsScreen() {
                 }
                 containerStyle={styles.checkboxContainer}
                 textStyle={styles.checkboxText}
-                checkedColor="#007AFF"
+                checkedColor="#FFD700"
                 uncheckedColor="#D1D1D1"
                 checkedIcon="check-square"
                 uncheckedIcon="square-o"
@@ -194,7 +190,7 @@ export default function SpotDetailsScreen() {
                 }
                 containerStyle={styles.checkboxContainer}
                 textStyle={styles.checkboxText}
-                checkedColor="#007AFF"
+                checkedColor="#FFD700"
                 uncheckedColor="#D1D1D1"
                 checkedIcon="check-square"
                 uncheckedIcon="square-o"
@@ -210,7 +206,7 @@ export default function SpotDetailsScreen() {
                 }
                 containerStyle={styles.checkboxContainer}
                 textStyle={styles.checkboxText}
-                checkedColor="#007AFF"
+                checkedColor="#FFD700"
                 uncheckedColor="#D1D1D1"
                 checkedIcon="check-square"
                 uncheckedIcon="square-o"
@@ -223,7 +219,7 @@ export default function SpotDetailsScreen() {
                 }
                 containerStyle={styles.checkboxContainer}
                 textStyle={styles.checkboxText}
-                checkedColor="#007AFF"
+                checkedColor="#FFD700"
                 uncheckedColor="#D1D1D1"
                 checkedIcon="check-square"
                 uncheckedIcon="square-o"
@@ -285,11 +281,8 @@ const styles = StyleSheet.create({
   reportButton: {
     padding: 5,
   },
-  imageContainer: {
-    height: 300,
-  },
   image: {
-    width: 400,
+    width: "100%",
     height: 300,
     resizeMode: "cover",
   },
@@ -322,20 +315,20 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#007AFF",
+    color: "#FFD700",
     marginBottom: 10,
   },
   availabilityContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#E6F2FF",
+    backgroundColor: "#FFF8E1",
     padding: 10,
     borderRadius: 8,
     marginBottom: 20,
   },
   availabilityText: {
     fontSize: 16,
-    color: "#007AFF",
+    color: "#000",
     marginLeft: 10,
   },
   sectionTitle: {
@@ -384,7 +377,7 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   bookButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
     borderRadius: 10,
     paddingVertical: 15,
     marginTop: 20,
@@ -453,23 +446,23 @@ const styles = StyleSheet.create({
   cancelButton: {
     height: 48,
     borderRadius: 12,
-    borderColor: "#007AFF",
+    borderColor: "#FFD700",
     borderWidth: 1,
     backgroundColor: "transparent",
   },
   submitButton: {
     height: 48,
     borderRadius: 12,
-    backgroundColor: "#007AFF",
+    backgroundColor: "#FFD700",
     borderWidth: 0,
   },
   cancelButtonText: {
-    color: "#007AFF",
+    color: "#FFD700",
     fontSize: 16,
     fontWeight: "500",
   },
   submitButtonText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 16,
     fontWeight: "500",
   },
