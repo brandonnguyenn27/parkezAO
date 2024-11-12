@@ -58,7 +58,7 @@ export const parkingSpots: ParkingSpot[] = [
     id: 2,
     name: "Nice Parking Spot",
     address: "456 1st St, San Jose, CA 95110",
-    price: 1.25,
+    price: 1.3,
     latitude: 37.3318,
     longitude: -121.8916,
     rating: 4.0,

@@ -36,6 +36,7 @@ export default function HostScreen() {
   const [instantBookEnabled, setInstantBookEnabled] = useState(false);
   const [minUserRating, setMinUserRating] = useState("");
   const [photos, setPhotos] = useState([]);
+  const [businessLicense, setBusinessLicense] = useState(null);
 
   const handleAddPhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,6 +55,12 @@ export default function HostScreen() {
     // Simulating document selection
     setProofOfOwnership({ name: "proof_of_ownership.pdf" });
     alert("Document selected: proof_of_ownership.pdf");
+  };
+
+  const handleBusinessLicensePick = () => {
+    // Simulating document selection
+    setBusinessLicense({ name: "business_license.pdf" });
+    alert("Document selected: business_license.pdf");
   };
 
   const handleSubmit = () => {
@@ -77,6 +84,7 @@ export default function HostScreen() {
       instantBookEnabled,
       minUserRating: instantBookEnabled ? minUserRating : null,
       photos,
+      businessLicense,
     });
     // After submission, navigate back to the profile or a confirmation page
     router.push("/");
@@ -271,7 +279,7 @@ export default function HostScreen() {
         <Text style={styles.sectionTitle}>Amenities</Text>
 
         <View style={styles.switchContainer}>
-          <Text style={styles.switchLabel}>EV Charging</Text>
+          <Text style={styles.switchLabel}>Covered Parking</Text>
           <Switch value={evCharging} onValueChange={setEvCharging} />
         </View>
 
@@ -320,6 +328,22 @@ export default function HostScreen() {
           />
           <Text style={styles.uploadButtonText}>
             {proofOfOwnership ? "File Selected" : "Upload Proof of Ownership"}
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={styles.sectionTitle}>Business License</Text>
+        <TouchableOpacity
+          style={styles.uploadButton}
+          onPress={handleBusinessLicensePick}
+        >
+          <FontAwesome
+            name="file-text"
+            size={24}
+            color="#fff"
+            style={styles.uploadIcon}
+          />
+          <Text style={styles.uploadButtonText}>
+            {businessLicense ? "File Selected" : "Upload Business License"}
           </Text>
         </TouchableOpacity>
 

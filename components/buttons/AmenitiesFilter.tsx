@@ -14,12 +14,7 @@ interface AmenitiesFilterProps {
   onFilterChange: (amenities: string[]) => void;
 }
 
-const amenitiesList = [
-  "Security",
-  "EV Charging",
-  "Wheelchair Accessible",
-  "Covered Parking",
-];
+const amenitiesList = ["Security", "Wheelchair Accessible", "Covered Parking"];
 
 export default function AmenitiesFilter({
   onFilterChange,
