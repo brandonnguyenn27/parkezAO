@@ -6,9 +6,9 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 1. Install Bun
 
-```bash
-https://bun.sh/docs/installation
-```
+
+   https://bun.sh/docs/installation
+
 
 2. Install dependencies
 
