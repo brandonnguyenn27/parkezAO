@@ -135,10 +135,16 @@ export default function CheckoutView() {
     return Math.max(duration, 0).toFixed(1);
   };
 
+  const SERVICE_FEE = 0.2;
+  const TAX_RATE = 0.05;
+
   const calculateTotalPrice = (duration) => {
     let basePrice = spot.price * duration;
+    let serviceFee = basePrice * SERVICE_FEE;
+    let subtotal = basePrice + serviceFee;
+    let tax = subtotal * TAX_RATE;
 
-    return (basePrice + 2).toFixed(2);
+    return (subtotal + tax).toFixed(2);
   };
 
   const generateTimeOptions = () => {
@@ -385,9 +391,30 @@ export default function CheckoutView() {
           </View>
 
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryText}>Service Fee</Text>
-            <Text style={styles.summaryPrice}>$2.00</Text>
+            <Text style={styles.summaryText}>Service Fee (20%)</Text>
+            <Text style={styles.summaryPrice}>
+              $
+              {(
+                spot.price *
+                SERVICE_FEE *
+                parseFloat(calculateDuration())
+              ).toFixed(2)}
+            </Text>
           </View>
+
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryText}>Tax (5% of subtotal)</Text>
+            <Text style={styles.summaryPrice}>
+              $
+              {(
+                spot.price *
+                parseFloat(calculateDuration()) *
+                (1 + SERVICE_FEE) *
+                TAX_RATE
+              ).toFixed(2)}
+            </Text>
+          </View>
+
           <View style={[styles.summaryRow, styles.totalRow]}>
             <Text style={styles.totalText}>Total</Text>
             <Text style={styles.totalPrice}>

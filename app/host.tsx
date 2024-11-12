@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   Switch,
   Platform,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 export default function HostScreen() {
   const router = useRouter();
@@ -33,6 +35,20 @@ export default function HostScreen() {
   const [proofOfOwnership, setProofOfOwnership] = useState(null);
   const [instantBookEnabled, setInstantBookEnabled] = useState(false);
   const [minUserRating, setMinUserRating] = useState("");
+  const [photos, setPhotos] = useState([]);
+
+  const handleAddPhoto = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setPhotos([...photos, result.assets[0].uri]);
+    }
+  };
 
   const handleDocumentPick = () => {
     // Simulating document selection
@@ -60,6 +76,7 @@ export default function HostScreen() {
       proofOfOwnership,
       instantBookEnabled,
       minUserRating: instantBookEnabled ? minUserRating : null,
+      photos,
     });
     // After submission, navigate back to the profile or a confirmation page
     router.push("/");
@@ -335,6 +352,24 @@ export default function HostScreen() {
           </View>
         )}
 
+        <Text style={styles.sectionTitle}>Photos</Text>
+        <TouchableOpacity style={styles.uploadButton} onPress={handleAddPhoto}>
+          <FontAwesome
+            name="camera"
+            size={24}
+            color="#fff"
+            style={styles.uploadIcon}
+          />
+          <Text style={styles.uploadButtonText}>Add Photo</Text>
+        </TouchableOpacity>
+        {photos.length > 0 && (
+          <View style={styles.photoContainer}>
+            {photos.map((photo, index) => (
+              <Image key={index} source={{ uri: photo }} style={styles.photo} />
+            ))}
+          </View>
+        )}
+
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Submit Driveway</Text>
         </TouchableOpacity>
@@ -438,5 +473,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#000",
+  },
+  photoContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 10,
+  },
+  photo: {
+    width: 100,
+    height: 100,
+    margin: 5,
+    borderRadius: 5,
   },
 });
