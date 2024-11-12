@@ -33,9 +33,8 @@ export const parkingSpots: ParkingSpot[] = [
     longitude: -121.8863,
     rating: 4.5,
     reviews: 120,
-    amenities: ["Security", "EV Charging", "Covered"],
-    description:
-      "Convenient downtown parking with 24/7 security and EV charging stations.",
+    amenities: ["Security", "Covered"],
+    description: "Convenient downtown parking with 24/7 security.",
     images: ["https://i.ibb.co/tBcM0B2/PNG-image.jpg"],
     reviewsList: [
       {
@@ -94,8 +93,8 @@ export const parkingSpots: ParkingSpot[] = [
     longitude: -121.8847, // Updated longitude
     rating: 3.5,
     reviews: 62,
-    amenities: ["EV Charging", "Wheelchair Accessible"],
-    description: "Affordable residential parking with EV charging stations.",
+    amenities: ["Wheelchair Accessible"],
+    description: "Affordable residential parking.",
     images: ["https://i.ibb.co/bHH8jLy/PNG-image.jpg"],
     reviewsList: [
       {
@@ -109,7 +108,7 @@ export const parkingSpots: ParkingSpot[] = [
         id: "2",
         user: "Lisa W.",
         rating: 4,
-        comment: "Convenient EV charging for residents.",
+        comment: "Great spot to park for the afternoon.",
       },
     ],
     startTime: "18:00", // Updated to military time format
@@ -189,7 +188,7 @@ export const parkingSpots: ParkingSpot[] = [
     longitude: -122.4075,
     rating: 4.3,
     reviews: 150,
-    amenities: ["Security", "EV Charging", "24/7 Access"],
+    amenities: ["Security", "24/7 Access"],
     description:
       "Prime parking location in the heart of San Francisco's shopping district.",
     images: [
@@ -214,7 +213,7 @@ export const parkingSpots: ParkingSpot[] = [
         id: "3",
         user: "Sophia R.",
         rating: 4,
-        comment: "Clean and secure. Appreciate the EV charging stations.",
+        comment: "Clean and secure.",
       },
     ],
     startTime: "00:00", // Updated to military time format
