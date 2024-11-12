@@ -93,55 +93,66 @@ export default function SpotDetailsScreen() {
         <Image source={{ uri: spot.images[0] }} style={styles.image} />
 
         <View style={styles.content}>
-          <Text style={styles.title}>{spot.name}</Text>
-          <Text style={styles.distance}>
-            {spot.distance.toFixed(1)} mi away
-          </Text>
+          <View style={styles.contentPadding}>
+            <Text style={styles.title}>{spot.name}</Text>
+            <Text style={styles.distance}>
+              {spot.distance.toFixed(1)} mi away
+            </Text>
 
-          <View style={styles.ratingContainer}>
-            {renderStars(spot.rating)}
-            <Text style={styles.ratingText}>
-              {spot.rating.toFixed(1)} ({spot.reviews} reviews)
-            </Text>
+            <View style={styles.ratingContainer}>
+              {renderStars(spot.rating)}
+              <Text style={styles.ratingText}>
+                {spot.rating.toFixed(1)} ({spot.reviews} reviews)
+              </Text>
+            </View>
+            <Text style={styles.price}>${spot.price}/hr</Text>
+            <View style={styles.availabilityContainer}>
+              <Icon name="access-time" size={24} color="#ffce00" />
+              <Text style={styles.availabilityText}>
+                Available: {spot.startTime} - {spot.endTime}
+              </Text>
+            </View>
+            <Text style={styles.sectionTitle}>Description</Text>
+            <Text style={styles.description}>{spot.description}</Text>
+            <Text style={styles.sectionTitle}>Amenities</Text>
+            <View style={styles.amenitiesContainer}>
+              {spot.amenities.map((amenity, index) => (
+                <View key={index} style={styles.amenityItem}>
+                  <Icon name="check-circle" size={20} color="#4CAF50" />
+                  <Text style={styles.amenityText}>{amenity}</Text>
+                </View>
+              ))}
+            </View>
           </View>
-          <Text style={styles.price}>${spot.price}/hr</Text>
-          <View style={styles.availabilityContainer}>
-            <Icon name="access-time" size={24} color="#ffce00" />
-            <Text style={styles.availabilityText}>
-              Available: {spot.startTime} - {spot.endTime}
-            </Text>
+
+          <View style={styles.bannerAdContainer}>
+            <Image
+              source={{ uri: "https://i.ibb.co/BZGbg31/PLAY-NOW.jpg" }}
+              style={styles.bannerAd}
+            />
           </View>
-          <Text style={styles.sectionTitle}>Description</Text>
-          <Text style={styles.description}>{spot.description}</Text>
-          <Text style={styles.sectionTitle}>Amenities</Text>
-          <View style={styles.amenitiesContainer}>
-            {spot.amenities.map((amenity, index) => (
-              <View key={index} style={styles.amenityItem}>
-                <Icon name="check-circle" size={20} color="#4CAF50" />
-                <Text style={styles.amenityText}>{amenity}</Text>
+          <View style={styles.contentPadding}>
+            <Text style={styles.sectionTitle}>Reviews</Text>
+            {spot.reviewsList.map((review) => (
+              <View key={review.id} style={styles.reviewItem}>
+                <View style={styles.reviewHeader}>
+                  <Text style={styles.reviewUser}>{review.user}</Text>
+                  {renderStars(review.rating)}
+                </View>
+                <Text style={styles.reviewComment}>{review.comment}</Text>
               </View>
             ))}
+            <Button
+              title="Book Now"
+              buttonStyle={styles.bookButton}
+              onPress={() => {
+                router.push({
+                  pathname: "/checkout/[id]",
+                  params: { id: spot.id.toString() },
+                });
+              }}
+            />
           </View>
-          <Text style={styles.sectionTitle}>Reviews</Text>
-          {spot.reviewsList.map((review) => (
-            <View key={review.id} style={styles.reviewItem}>
-              <View style={styles.reviewHeader}>
-                <Text style={styles.reviewUser}>{review.user}</Text>
-                {renderStars(review.rating)}
-              </View>
-              <Text style={styles.reviewComment}>{review.comment}</Text>
-            </View>
-          ))}
-          <Button
-            title="Book Now"
-            buttonStyle={styles.bookButton}
-            onPress={() => {
-              router.push({
-                pathname: "/checkout/[id]",
-                params: { id: spot.id.toString() },
-              });
-            }}
-          />
         </View>
       </ScrollView>
 
@@ -284,10 +295,9 @@ const styles = StyleSheet.create({
     height: 300,
     resizeMode: "cover",
   },
-  content: {
-    padding: 20,
-  },
+  content: {},
   title: {
+    marginTop: 15,
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 5,
@@ -463,5 +473,18 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 16,
     fontWeight: "500",
+  },
+  bannerAdContainer: {
+    width: "100%",
+    aspectRatio: 7,
+    marginVertical: 20,
+  },
+  bannerAd: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "stretch",
+  },
+  contentPadding: {
+    paddingHorizontal: 20,
   },
 });
