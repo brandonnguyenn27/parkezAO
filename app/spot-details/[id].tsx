@@ -16,6 +16,13 @@ import { Button, CheckBox } from "@rneui/themed";
 import { parkingSpots } from "../data/parking";
 
 export default function SpotDetailsScreen() {
+  const bannerAds = [
+    "https://i.ibb.co/BZGbg31/PLAY-NOW.jpg",
+    "https://i.ibb.co/K0SnddP/Untitled-design-1.jpg",
+  ];
+  const randomBannerAd =
+    bannerAds[Math.floor(Math.random() * bannerAds.length)];
+
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const spot = parkingSpots.find((s) => s.id === Number(id));
@@ -126,10 +133,7 @@ export default function SpotDetailsScreen() {
           </View>
 
           <View style={styles.bannerAdContainer}>
-            <Image
-              source={{ uri: "https://i.ibb.co/BZGbg31/PLAY-NOW.jpg" }}
-              style={styles.bannerAd}
-            />
+            <Image source={{ uri: randomBannerAd }} style={styles.bannerAd} />
           </View>
           <View style={styles.contentPadding}>
             <Text style={styles.sectionTitle}>Reviews</Text>
