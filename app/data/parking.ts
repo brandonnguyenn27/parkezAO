@@ -64,16 +64,15 @@ export const parkingSpots: ParkingSpot[] = [
     longitude: -121.8916,
     rating: 4.0,
     reviews: 85,
-    amenities: ["Security", "Wheelchair Accessible", "Valet"],
-    description:
-      "Centrally located garage with valet service and wheelchair accessibility.",
+    amenities: ["Security", "Wheelchair Accessible"],
+    description: "Centrally located garage with wheelchair accessibility.",
     images: ["https://i.ibb.co/kKJG2yV/PNG-image.jpg"],
     reviewsList: [
       {
         id: "1",
         user: "Mike R.",
         rating: 4,
-        comment: "Valet service is quick and efficient.",
+        comment: "Great spot to park for a couple hours!",
       },
       {
         id: "2",
@@ -126,16 +125,15 @@ export const parkingSpots: ParkingSpot[] = [
     longitude: -121.8839,
     rating: 4.2,
     reviews: 95,
-    amenities: ["Security", "Covered", "Valet"],
-    description: "Premium street parking with valet service and covered spots.",
+    amenities: ["Security", "Covered"],
+    description: "Premium street parking with covered spots.",
     images: ["https://i.ibb.co/yP1pRRJ/PNG-image.jpg"],
     reviewsList: [
       {
         id: "1",
         user: "David H.",
         rating: 5,
-        comment:
-          "Excellent valet service, always feel safe leaving my car here.",
+        comment: "Always feel safe leaving my car here.",
       },
       {
         id: "2",
@@ -191,7 +189,7 @@ export const parkingSpots: ParkingSpot[] = [
     longitude: -122.4075,
     rating: 4.3,
     reviews: 150,
-    amenities: ["Security", "EV Charging", "Valet", "24/7 Access"],
+    amenities: ["Security", "EV Charging", "24/7 Access"],
     description:
       "Prime parking location in the heart of San Francisco's shopping district.",
     images: [
@@ -204,8 +202,7 @@ export const parkingSpots: ParkingSpot[] = [
         id: "1",
         user: "Jessica L.",
         rating: 5,
-        comment:
-          "Perfect location for shopping. The valet service is excellent!",
+        comment: "Perfect location for shopping.",
       },
       {
         id: "2",
